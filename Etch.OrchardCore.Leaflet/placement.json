@@ -1,0 +1,18 @@
+{
+  "MediaField_Edit": [
+    {
+      "place": "Parts:1",
+      "contentType": [
+        "MapTiles"
+      ]
+    }
+  ],
+  "MapTiles": [
+    {
+      "place": "Parts:10",
+      "contentType": [
+        "MapTiles"
+      ]
+    }
+  ]
+}

@@ -12,6 +12,12 @@
     <PackageTags>orchardcore;etchuk</PackageTags>
   </PropertyGroup>
 
+  <ItemGroup> 
+    <Content Include="TileGenerator\**"> 
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory> 
+    </Content> 
+  </ItemGroup>
+
   <ItemGroup>
     <PackageReference Include="OrchardCore.ContentManagement" Version="1.0.0-rc1-10004" />
     <PackageReference Include="OrchardCore.DisplayManagement" Version="1.0.0-rc1-10004" />

@@ -4,6 +4,6 @@
     {
         public const string TilesContentType = "MapTiles";
         public const string TilesContentTypeDisplayName = "Map Tiles";
-        public const string TilesMediaFileName = "MapImage";
+        public const string TilesMediaFileFieldName = "MapImage";
     }
 }

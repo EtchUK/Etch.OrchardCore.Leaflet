@@ -76,6 +76,16 @@ module.exports = {
                     'sass-loader',
                 ],
             },
+            {
+                test: /\.(png|jpg)$/,
+                use: {
+                    loader: 'file-loader',
+                    options: {
+                        name: './images/[name].[ext]',
+                        publicPath: '../',
+                    },
+                },
+            },
         ],
     },
     externals: {},
@@ -90,6 +100,9 @@ module.exports = {
         }),
     ],
     resolve: {
-        extensions: ['.tsx', '.ts', '.js'],
+        extensions: ['.js', '.css', '.ts', '.tsx'],
+        alias: {
+            'leaflet-css': __dirname + '/node_modules/leaflet/dist/leaflet.css',
+        },
     },
 };

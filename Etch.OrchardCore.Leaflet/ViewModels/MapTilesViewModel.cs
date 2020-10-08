@@ -9,5 +9,6 @@ namespace Etch.OrchardCore.Leaflet.ViewModels
         public bool HasBeenProcessed { get; set; }
         public bool IsProcessing { get; set; }
         public bool PublishAfterProcessed { get; set; }
+        public string TileRoot { get; set; }
     }
 }

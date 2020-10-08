@@ -23,7 +23,7 @@ namespace Etch.OrchardCore.Leaflet
                 .WithDisplayName(Constants.TilesContentTypeDisplayName));
 
             _contentDefinitionManager.AlterPartDefinition(Constants.TilesContentType, part => part
-                .WithField(Constants.TilesMediaFileName, field => field
+                .WithField(Constants.TilesMediaFileFieldName, field => field
                     .OfType(nameof(MediaField))
                     .WithDisplayName("Map Image")
                     .WithSettings(new MediaFieldSettings

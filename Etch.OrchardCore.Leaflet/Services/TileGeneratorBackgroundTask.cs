@@ -62,7 +62,7 @@ namespace Etch.OrchardCore.Leaflet.Services
 
             await UpdateToProcessingAsync(serviceProvider, itemToProcess);
 
-            var mediaField = itemToProcess.As<MapTiles>().Get<MediaField>(Constants.TilesMediaFileName);
+            var mediaField = itemToProcess.As<MapTiles>().Get<MediaField>(Constants.TilesMediaFileFieldName);
 
             if (mediaField == null || !mediaField.Paths.Any())
             {

@@ -1,4 +1,5 @@
-﻿using OrchardCore.ContentManagement.Metadata;
+﻿using Etch.OrchardCore.Leaflet.Indexes;
+using OrchardCore.ContentManagement.Metadata;
 using OrchardCore.ContentManagement.Metadata.Settings;
 using OrchardCore.Data.Migration;
 using OrchardCore.Media.Fields;
@@ -22,8 +23,8 @@ namespace Etch.OrchardCore.Leaflet
                 .WithDisplayName(Constants.TilesContentTypeDisplayName));
 
             _contentDefinitionManager.AlterPartDefinition(Constants.TilesContentType, part => part
-                .WithField("MapImage", field => field
-                    .OfType(typeof(MediaField).Name)
+                .WithField(Constants.TilesMediaFileName, field => field
+                    .OfType(nameof(MediaField))
                     .WithDisplayName("Map Image")
                     .WithSettings(new MediaFieldSettings
                     {
@@ -43,6 +44,16 @@ namespace Etch.OrchardCore.Leaflet
                 .WithPart("TitlePart")
                 .WithPart(Constants.TilesContentType)
                 .DisplayedAs(Constants.TilesContentTypeDisplayName));
+
+            SchemaBuilder.CreateMapIndexTable(nameof(MapTilesIndex), table => table
+                .Column<bool>(nameof(MapTilesIndex.HasBeenProcessed))
+            );
+
+            SchemaBuilder.AlterTable(nameof(MapTilesIndex), table => table
+                .CreateIndex(
+                    $"IDX_{nameof(MapTilesIndex)}_{nameof(MapTilesIndex.HasBeenProcessed)}",
+                    nameof(MapTilesIndex.HasBeenProcessed))
+            );
 
             return 1;
         }

@@ -1,6 +1,28 @@
 ﻿@model Etch.OrchardCore.Leaflet.ViewModels.MapTilesViewModel
 
-@if (!Model.ContentItem.CreatedUtc.HasValue)
+@{
+    var isNew = !Model.ContentItem.CreatedUtc.HasValue;
+}
+
+@if (isNew)
 {
     <div class="alert alert-warning" role="alert">@T["Tiles will be generated after creation."]</div>
+
+    <div class="form-group">
+        <div class="custom-control custom-checkbox">
+            <input type="checkbox" class="custom-control-input" asp-for="PublishAfterProcessed" checked="@Model.PublishAfterProcessed" />
+            <label class="custom-control-label" asp-for="PublishAfterProcessed">@T["Publish after processed"]</label>
+            <span class="hint">— @T["Check to publish content item after tiles have been generated."]</span>
+        </div>
+    </div>
+}
+
+@if (!isNew && !Model.HasBeenProcessed)
+{
+    <div class="alert alert-warning" role="alert">@T["Tiles are waiting to be generated."]</div>
+}
+
+@if (!isNew && Model.IsProcessing)
+{
+    <div class="alert alert-warning" role="alert">@T["Tiles are being generated."]</div>
 }

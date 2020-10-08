@@ -8,7 +8,6 @@ using OrchardCore.ContentManagement;
 using OrchardCore.ContentManagement.Display.ContentDisplay;
 using OrchardCore.Data.Migration;
 using OrchardCore.Modules;
-using System;
 using YesSql.Indexes;
 
 namespace Etch.OrchardCore.Leaflet

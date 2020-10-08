@@ -10,6 +10,10 @@ Module for [Orchard Core](https://github.com/OrchardCMS/OrchardCore) that provid
 
 This module is referencing the RC1 build of Orchard Core ([`1.0.0-rc1-13450`](https://www.nuget.org/packages/OrchardCore.Module.Targets/1.0.0-rc1-10004)).
 
+## OS Support
+
+This module is limited to Windows because it's using [Deep Zoom](https://www.microsoft.com/silverlight/deep-zoom/) library for tile generation.
+
 ## Installing
 
 This module is available on [NuGet](https://www.nuget.org/packages/Etch.OrchardCore.Leaflet). Add a reference to your Orchard Core web project via the NuGet package manager. Search for "Etch.OrchardCore.Leaflet", ensuring include prereleases is checked.

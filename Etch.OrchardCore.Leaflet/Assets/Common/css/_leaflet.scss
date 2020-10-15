@@ -1,0 +1,21 @@
+.leaflet {
+    display: block;
+    max-width: 100%;
+    overflow: hidden;
+    padding-bottom: 56.25%;
+    position: relative;
+
+    .leaflet-container {
+        height: 100%;
+        left: 0;
+        position: absolute;
+        top: 0;
+        width: 100%;
+
+        background-color: rgba(255, 0, 0, 0);
+    }
+}
+
+.leaflet--admin {
+    margin-bottom: 3rem;
+}

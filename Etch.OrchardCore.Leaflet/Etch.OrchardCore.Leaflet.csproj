@@ -19,6 +19,8 @@
   </ItemGroup>
 
   <ItemGroup>
+    <PackageReference Include="OrchardCore.Autoroute" Version="1.0.0-rc1-10004" />
+    <PackageReference Include="OrchardCore.ContentFields" Version="1.0.0-rc1-10004" />
     <PackageReference Include="OrchardCore.ContentManagement" Version="1.0.0-rc1-10004" />
     <PackageReference Include="OrchardCore.DisplayManagement" Version="1.0.0-rc1-10004" />
     <PackageReference Include="OrchardCore.Media" Version="1.0.0-rc1-10004" />
@@ -28,6 +30,10 @@
 
   <ItemGroup>
     <FrameworkReference Include="Microsoft.AspNetCore.App" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Assets\Common\" />
   </ItemGroup>
 
 </Project>

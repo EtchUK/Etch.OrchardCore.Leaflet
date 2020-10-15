@@ -1,0 +1,12 @@
+﻿@model Etch.OrchardCore.Leaflet.ViewModels.MapViewModel
+
+<style asp-src="~/Etch.OrchardCore.Leaflet/Styles/map.css" at="Head"></style>
+<script asp-src="~/Etch.OrchardCore.Leaflet/Scripts/map.js" asp-name="leafletmap" depends-on="jquery" at="Foot"></script>
+
+<script at="Foot">
+    window.initializeMap({ domId: 'map', tileRoot: '@Model.TileRoot' });
+</script>
+
+<div class="leaflet">
+    <div id="map"></div>
+</div>

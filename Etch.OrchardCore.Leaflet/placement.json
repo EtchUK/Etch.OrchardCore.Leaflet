@@ -1,4 +1,13 @@
 {
+  "ContentPickerField": [
+    {
+      "contentType": [
+        "Map"
+      ],
+      "displayType": "Detail",
+      "place": "-"
+    }
+  ],
   "MediaField_Edit": [
     {
       "place": "Content:5",
@@ -19,6 +28,7 @@
     {
       "place": "Content:1",
       "contentType": [
+        "Map",
         "MapTiles"
       ]
     }

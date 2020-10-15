@@ -19,6 +19,9 @@ namespace Etch.OrchardCore.Leaflet
             services.AddContentPart<MapTiles>();
             services.AddScoped<IContentPartDisplayDriver, MapTilesDisplay>();
 
+            services.AddContentPart<Map>();
+            services.AddScoped<IContentPartDisplayDriver, MapDisplay>();
+
             services.AddScoped<IDataMigration, Migrations>();
 
             services.AddSingleton<IBackgroundTask, TileGeneratorBackgroundTask>();

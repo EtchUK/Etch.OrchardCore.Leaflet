@@ -6,6 +6,7 @@ const path = require('path');
 module.exports = {
     entry: {
         admin: './Assets/Admin/js/index.ts',
+        map: './Assets/Map/js/index.ts',
     },
     mode: 'development',
     module: {

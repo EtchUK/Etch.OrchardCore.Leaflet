@@ -1,0 +1,11 @@
+language: csharp
+mono: none
+dist: bionic
+dotnet: 3.0
+
+install:
+  - dotnet restore ./Etch.OrchardCore.Leaflet
+
+script:
+  - dotnet msbuild -property:Configuration=Release ./Etch.OrchardCore.LeafletTileGenerator
+  - dotnet build ./Etch.OrchardCore.Leaflet

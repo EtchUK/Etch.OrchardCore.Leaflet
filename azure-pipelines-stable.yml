@@ -1,0 +1,40 @@
+pool:
+  vmImage: "windows-2019"
+
+variables:
+  BuildConfiguration: "Release"
+
+trigger: none
+pr: none
+
+steps:
+  - task: tmarkovski.projectversionasvariable.versionintovariable.projectversionasvariable@1
+    displayName: "Get Project Version as variables from Etch.OrchardCore.Leaflet.csproj"
+    inputs:
+      path: ./Etch.OrchardCore.Leaflet/Etch.OrchardCore.Leaflet.csproj
+
+  - task: DotNetCoreCLI@2
+    displayName: "Build tile generator"
+    inputs:
+      arguments: "-c $(BuildConfiguration)"
+      command: "msbuild"
+      projects: "./Etch.OrchardCore.LeafletTileGenerator/Etch.OrchardCore.LeafletTileGenerator.csproj"
+
+  - task: DotNetCoreCLI@2
+    displayName: "Build module"
+    inputs:
+      arguments: "-c $(BuildConfiguration)"
+      projects: "./Etch.OrchardCore.Leaflet/Etch.OrchardCore.Leaflet.csproj"
+
+  - task: DotNetCoreCLI@2
+    displayName: "dotnet pack"
+    inputs:
+      command: pack
+      packagesToPack: "./Etch.OrchardCore.Leaflet/Etch.OrchardCore.Leaflet.csproj"
+      versioningScheme: byEnvVar
+      versionEnvVar: "VERSION_MAJORMINORPATCH"
+
+  - task: PublishPipelineArtifact@0
+    displayName: "Publish Pipeline Artifact"
+    inputs:
+      targetPath: "$(Build.ArtifactStagingDirectory)"

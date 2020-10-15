@@ -17,9 +17,9 @@ window.initializeMap = (options: IInitializeOptions) => {
     const map = L.map(options.domId, {
         maxBoundsViscosity: 1.0,
         maxZoom: 14,
-        minZoom: 8,
+        minZoom: 10,
         zoomControl: true,
-    }).setView(new L.LatLng(0, 0), 14);
+    }).setView(new L.LatLng(0, 0), 11);
 
     // Workaround for global map referenced in deepzoom init
     // https://github.com/alfarisi/leaflet-deepzoom/issues/8

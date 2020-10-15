@@ -17,13 +17,6 @@ steps:
       configuration: $(BuildConfiguration)
 
   - task: DotNetCoreCLI@2
-    displayName: "Build tile generator"
-    inputs:
-      arguments: "-c $(BuildConfiguration)"
-      command: "msbuild"
-      projects: "./Etch.OrchardCore.LeafletTileGenerator/Etch.OrchardCore.LeafletTileGenerator.csproj"
-
-  - task: DotNetCoreCLI@2
     displayName: "Build module"
     inputs:
       arguments: "-c $(BuildConfiguration)"

@@ -4,9 +4,9 @@
 <script asp-src="~/Etch.OrchardCore.Leaflet/Scripts/map.js" asp-name="leafletmap" depends-on="jquery" at="Foot"></script>
 
 <script at="Foot">
-    window.initializeMap({ domId: 'map', tileRoot: '@Model.TileRoot' });
+    window.initializeMap({ domId: 'map', height: @Model.Height, tileRoot: '@Model.TileRoot', width: @Model.Width });
 </script>
 
-<div class="leaflet">
+<div class="leaflet" style="padding-bottom: @Model.Ratio.ToString("#.000")%;">
     <div id="map"></div>
 </div>

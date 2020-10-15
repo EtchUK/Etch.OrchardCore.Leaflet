@@ -4,6 +4,8 @@
     var isNew = !Model.ContentItem.CreatedUtc.HasValue;
 }
 
+<script asp-src="~/Etch.OrchardCore.Leaflet/Scripts/admin.js" asp-name="leafletmapadmin" depends-on="jquery" at="Foot"></script>
+
 @if (isNew)
 {
     <div class="alert alert-warning" role="alert">@T["Tiles will be generated after creation."]</div>
@@ -30,10 +32,9 @@
 @if (!Model.IsProcessing && Model.HasBeenProcessed)
 {
     <style asp-src="~/Etch.OrchardCore.Leaflet/Styles/admin.css" at="Head"></style>
-    <script asp-src="~/Etch.OrchardCore.Leaflet/Scripts/admin.js" asp-name="leafletmapadmin" depends-on="jquery" at="Foot"></script>
 
     <script at="Foot">
-    window.initializeMap({ domId: 'map', tileRoot: '@Model.TileRoot' });
+    window.initializeMap({ domId: 'map', height: @Model.Height, tileRoot: '@Model.TileRoot', width: @Model.Width });
     </script>
 
     <h4>Preview</h4>
@@ -42,3 +43,6 @@
         <div id="map"></div>
     </div>
 }
+
+@Html.HiddenFor(x => x.Height)
+@Html.HiddenFor(x => x.Width)

@@ -10,7 +10,7 @@
   ],
   "MediaField_Edit": [
     {
-      "place": "Content:5",
+      "place": "Content:15",
       "contentType": [
         "MapTiles"
       ]
@@ -18,7 +18,7 @@
   ],
   "MapTiles_Edit": [
     {
-      "place": "Content:10",
+      "place": "Content:20",
       "contentType": [
         "MapTiles"
       ]
@@ -26,11 +26,7 @@
   ],
   "TitlePart_Edit": [
     {
-      "place": "Content:1",
-      "contentType": [
-        "Map",
-        "MapTiles"
-      ]
+      "place": "Content:1"
     }
   ]
 }

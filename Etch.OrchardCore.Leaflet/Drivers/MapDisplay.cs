@@ -35,14 +35,16 @@ namespace Etch.OrchardCore.Leaflet.Drivers
 
         public override async Task<IDisplayResult> DisplayAsync(Map map, BuildPartDisplayContext context)
         {
-            var tileRoot = await GetTileRootAsync(map);
+            var tiles = await GetTilesAsync(map);
 
             return Initialize<MapViewModel>("Map", model =>
             {
                 model.ContentItem = map.ContentItem;
+                model.Height = tiles.As<MapTiles>().Height;
+                model.Width = tiles.As<MapTiles>().Width;
 
                 // needs trailing slash otherwise doesn't load tile images
-                model.TileRoot = _mediaFileStore.MapPathToPublicUrl(tileRoot) + "/";
+                model.TileRoot = _mediaFileStore.MapPathToPublicUrl(GetTileRoot(tiles)) + "/";
             })
             .Location("Detail", "Content:5");
 
@@ -52,17 +54,20 @@ namespace Etch.OrchardCore.Leaflet.Drivers
 
         #region HelperMethods
 
-        private async Task<string> GetTileRootAsync(Map map)
+        private string GetTileRoot(ContentItem contentItem)
         {
-            var field = map.Get<ContentPickerField>(Constants.MapTilesContentFieldName);
-            var contentItem = await _contentManager.GetAsync(field.ContentItemIds.First());
-
             if (contentItem == null)
             {
                 return string.Empty;
             }
 
             return contentItem.As<MapTiles>().GetTileRoot();
+        }
+
+        private async Task<ContentItem> GetTilesAsync(Map map)
+        {
+            var field = map.Get<ContentPickerField>(Constants.MapTilesContentFieldName);
+            return await _contentManager.GetAsync(field.ContentItemIds.First());
         }
 
         #endregion

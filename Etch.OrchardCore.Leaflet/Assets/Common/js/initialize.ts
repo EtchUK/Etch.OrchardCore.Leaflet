@@ -18,8 +18,8 @@ const initialize = (options: IInitializeOptions) => {
     window.map = map;
     const dzLayer = (L.tileLayer as any)
         .deepzoom(options.tileRoot, {
-            width: 15000,
-            height: 7000,
+            width: options.width,
+            height: options.height,
         })
         .addTo(map);
     window.map = undefined;

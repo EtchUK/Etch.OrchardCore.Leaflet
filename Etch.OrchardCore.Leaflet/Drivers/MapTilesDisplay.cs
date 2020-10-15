@@ -35,8 +35,10 @@ namespace Etch.OrchardCore.Leaflet.Drivers
             {
                 model.ContentItem = part.ContentItem;
                 model.HasBeenProcessed = part.HasBeenProcessed;
+                model.Height = part.Height;
                 model.IsProcessing = part.IsProcessing;
                 model.PublishAfterProcessed = !part.ContentItem.CreatedUtc.HasValue || part.PublishAfterProcessed;
+                model.Width = part.Width;
 
                 // needs trailing slash otherwise doesn't load tile images
                 model.TileRoot = _mediaFileStore.MapPathToPublicUrl(part.GetTileRoot()) + "/";
@@ -47,9 +49,11 @@ namespace Etch.OrchardCore.Leaflet.Drivers
         {
             var viewModel = new MapTilesViewModel();
 
-            await updater.TryUpdateModelAsync(viewModel, Prefix, t => t.PublishAfterProcessed);
+            await updater.TryUpdateModelAsync(viewModel, Prefix, t => t.Height, t => t.PublishAfterProcessed, t => t.Width);
 
+            model.Height = viewModel.Height;
             model.PublishAfterProcessed = viewModel.PublishAfterProcessed;
+            model.Width = viewModel.Width;
 
             return Edit(model, context);
         }

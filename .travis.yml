@@ -1,6 +1,7 @@
+os: windows
 language: csharp
 mono: none
-dist: bionic
+dist: xenial
 dotnet: 3.0
 
 install:

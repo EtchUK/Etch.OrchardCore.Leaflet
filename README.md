@@ -21,3 +21,5 @@ This module is available on [NuGet](https://www.nuget.org/packages/Etch.OrchardC
 Alternatively you can [download the source](https://github.com/etchuk/Etch.OrchardCore.Leaflet/archive/master.zip) or clone the repository to your local machine. Add the project to your solution that contains an Orchard Core project and add a reference to Etch.OrchardCore.Leaflet.
 
 ## Usage
+
+_Module is still being developed, usage instructions will be available in the future._

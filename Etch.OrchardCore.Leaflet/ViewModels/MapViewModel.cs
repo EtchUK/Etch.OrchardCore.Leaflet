@@ -6,6 +6,9 @@ namespace Etch.OrchardCore.Leaflet.ViewModels
     {
         public ContentItem ContentItem { get; set; }
         public int Height { get; set; }
+        public decimal InitialZoom { get; set; }
+        public decimal MinZoom { get; set; }
+        public decimal MaxZoom { get; set; }
         public string TileRoot { get; set; }
         public int Width { get; set; }
 

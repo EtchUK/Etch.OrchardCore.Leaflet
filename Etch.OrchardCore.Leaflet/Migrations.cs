@@ -98,5 +98,55 @@ namespace Etch.OrchardCore.Leaflet
 
             return 2;
         }
+
+        public int UpdateFrom2()
+        {
+            _contentDefinitionManager.AlterPartDefinition(Constants.MapContentType, part => part
+                .WithField(Constants.MapInitialZoomFieldName, field => field
+                    .OfType(nameof(NumericField))
+                    .WithDisplayName("Initial Zoom")
+                    .WithSettings(new NumericFieldSettings
+                    {
+                        DefaultValue = Constants.DefaultInitialZoom.ToString(),
+                        Maximum = Constants.MaxZoomLevel,
+                        Minimum = 0,
+                        Required = true,
+                        Scale = 1
+                    })
+                )
+            );
+
+            _contentDefinitionManager.AlterPartDefinition(Constants.MapContentType, part => part
+                .WithField(Constants.MapMaxZoomFieldName, field => field
+                    .OfType(nameof(NumericField))
+                    .WithDisplayName("Maximum Zoom")
+                    .WithSettings(new NumericFieldSettings
+                    {
+                        DefaultValue = Constants.DefaultMaxZoom.ToString(),
+                        Maximum = Constants.MaxZoomLevel,
+                        Minimum = 0,
+                        Required = true,
+                        Scale = 1
+                    })
+                )
+            );
+
+            _contentDefinitionManager.AlterPartDefinition(Constants.MapContentType, part => part
+                .WithField(Constants.MapMinZoomFieldName, field => field
+                    .OfType(nameof(NumericField))
+                    .WithDisplayName("Minimum Zoom")
+                    .WithSettings(new NumericFieldSettings
+                    {
+                        DefaultValue = Constants.DefaultMinZoom.ToString(),
+                        Maximum = Constants.MaxZoomLevel,
+                        Minimum = 0,
+                        Required = true,
+                        Scale = 1
+                    })
+                )
+            );
+
+            return 3;
+        }
     }
 }

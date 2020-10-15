@@ -24,6 +24,32 @@
       ]
     }
   ],
+  "NumericField": [
+    {
+      "contentType": [
+        "Map"
+      ],
+      "displayType": "Detail",
+      "place": "-"
+    }
+  ],
+  "NumericField_Edit": [
+    {
+      "place": "Parts#Zoom:1",
+      "differentiator": "Map-InitialZoom",
+      "contentType": [ "Map" ]
+    },
+    {
+      "place": "Parts#Zoom:2",
+      "differentiator": "Map-MaxZoom",
+      "contentType": [ "Map" ]
+    },
+    {
+      "place": "Parts#Zoom:3",
+      "differentiator": "Map-MinZoom",
+      "contentType": [ "Map" ]
+    }
+  ],
   "TitlePart_Edit": [
     {
       "place": "Content:1"

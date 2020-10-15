@@ -13,12 +13,11 @@ steps:
     inputs:
       path: ./Etch.OrchardCore.Leaflet/Etch.OrchardCore.Leaflet.csproj
 
-  - task: DotNetCoreCLI@2
+  - task: MSBuild@1
     displayName: "Build tile generator"
     inputs:
-      arguments: "-c $(BuildConfiguration)"
-      command: "msbuild"
-      projects: "./Etch.OrchardCore.LeafletTileGenerator/Etch.OrchardCore.LeafletTileGenerator.csproj"
+      solution: "./Etch.OrchardCore.LeafletTileGenerator/Etch.OrchardCore.LeafletTileGenerator.csproj"
+      configuration: $(BuildConfiguration)
 
   - task: DotNetCoreCLI@2
     displayName: "Build module"

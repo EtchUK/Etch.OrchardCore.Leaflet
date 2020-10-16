@@ -18,7 +18,21 @@ This module is limited to Windows because it's using [Deep Zoom](https://www.mic
 
 This module is available on [NuGet](https://www.nuget.org/packages/Etch.OrchardCore.Leaflet). Add a reference to your Orchard Core web project via the NuGet package manager. Search for "Etch.OrchardCore.Leaflet", ensuring include prereleases is checked.
 
-Alternatively you can [download the source](https://github.com/etchuk/Etch.OrchardCore.Leaflet/archive/master.zip) or clone the repository to your local machine. Add the project to your solution that contains an Orchard Core project and add a reference to Etch.OrchardCore.Leaflet.
+The NuGet package for this module includes an application that handles the tile generator. To integrate this appliation with the module there needs to be a couple of ammendments to the project's `.csproj` file. Firstly, the `PackageReference` that was added needs to have an additional `GeneratePathProperty` property added as shown below.
+
+```
+<PackageReference Include="Etch.OrchardCore.Leaflet" Version="0.1.0-rc1" GeneratePathProperty="true" />
+```
+
+The other change is to copy the tile generator application files from the NuGet package in to the output directory of the project. Add the following to the `.csproj` file that will handle copying files from the NuGet package in to the output directory.
+
+```
+<Target Name="CopyTileGenerator" AfterTargets="Build">
+    <Copy SourceFiles="$(PkgEtch_OrchardCore_Leaflet)\content\TileGenerator\DeepZoomTools.dll" DestinationFolder="$(OutDir)/TileGenerator" />
+    <Copy SourceFiles="$(PkgEtch_OrchardCore_Leaflet)\content\TileGenerator\Etch.OrchardCore.LeafletTileGenerator.exe" DestinationFolder="$(OutDir)/TileGenerator" />
+    <Copy SourceFiles="$(PkgEtch_OrchardCore_Leaflet)\content\TileGenerator\Etch.OrchardCore.LeafletTileGenerator.exe.config" DestinationFolder="$(OutDir)/TileGenerator" />
+</Target>
+```
 
 ## Usage
 

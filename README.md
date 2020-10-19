@@ -32,6 +32,12 @@ The other change is to copy the tile generator application files from the NuGet 
     <Copy SourceFiles="$(PkgEtch_OrchardCore_Leaflet)\content\TileGenerator\Etch.OrchardCore.LeafletTileGenerator.exe" DestinationFolder="$(OutDir)/TileGenerator" />
     <Copy SourceFiles="$(PkgEtch_OrchardCore_Leaflet)\content\TileGenerator\Etch.OrchardCore.LeafletTileGenerator.exe.config" DestinationFolder="$(OutDir)/TileGenerator" />
 </Target>
+
+<Target Name="PublishTileGenerator" AfterTargets="AfterPublish">
+    <Copy SourceFiles="$(PkgEtch_OrchardCore_Leaflet)\content\TileGenerator\DeepZoomTools.dll" DestinationFolder="$(PublishDir)/TileGenerator" />
+    <Copy SourceFiles="$(PkgEtch_OrchardCore_Leaflet)\content\TileGenerator\Etch.OrchardCore.LeafletTileGenerator.exe" DestinationFolder="$(PublishDir)/TileGenerator" />
+    <Copy SourceFiles="$(PkgEtch_OrchardCore_Leaflet)\content\TileGenerator\Etch.OrchardCore.LeafletTileGenerator.exe.config" DestinationFolder="$(PublishDir)/TileGenerator" />
+</Target>
 ```
 
 ## Usage

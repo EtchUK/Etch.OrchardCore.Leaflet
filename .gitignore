@@ -335,5 +335,3 @@ Etch.OrchardCore.Leaflet/TileGenerator/**/*.DLL
 Etch.OrchardCore.Leaflet/TileGenerator/**/*.exe
 Etch.OrchardCore.Leaflet/TileGenerator/**/*.exe.config
 Etch.OrchardCore.Leaflet/TileGenerator/**/*.pdb
-
-wwwroot/

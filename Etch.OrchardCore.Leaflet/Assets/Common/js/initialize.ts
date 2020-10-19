@@ -8,10 +8,10 @@ const initialize = (options: IInitializeOptions) => {
     const map = L.map(options.domId, {
         attributionControl: false,
         maxBoundsViscosity: 1.0,
-        maxZoom: options.maxZoom,
-        minZoom: options.minZoom,
+        maxZoom: options.maxZoom || 14,
+        minZoom: options.minZoom || 8,
         zoomControl: true,
-    }).setView(new L.LatLng(0, 0), options.initialZoom);
+    }).setView(new L.LatLng(0, 0), options.initialZoom || 11);
 
     // Workaround for global map referenced in deepzoom init
     // https://github.com/alfarisi/leaflet-deepzoom/issues/8
@@ -26,7 +26,7 @@ const initialize = (options: IInitializeOptions) => {
 
     map.fitBounds(dzLayer.options.bounds);
     map.setMaxBounds(dzLayer.options.bounds);
-    map.setZoom(options.initialZoom);
+    map.setZoom(options.initialZoom || 11);
 };
 
 export default initialize;

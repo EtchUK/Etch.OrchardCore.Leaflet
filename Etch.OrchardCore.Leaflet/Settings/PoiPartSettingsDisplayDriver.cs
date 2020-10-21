@@ -36,7 +36,7 @@ namespace Etch.OrchardCore.Leaflet.Settings
 
             var viewModel = new PoiPartSettingsViewModel();
 
-            await context.Updater.TryUpdateModelAsync(viewModel, Prefix, m => m.MarkerIcon);
+            await context.Updater.TryUpdateModelAsync(viewModel, Prefix, m => m.MarkerIcon, m => m.MarkerIconHeight, m => m.MarkerIconWidth);
 
             context.Builder.WithSettings(new PoiPartSettings
             {

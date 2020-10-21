@@ -34,23 +34,52 @@ namespace Etch.OrchardCore.Leaflet.Drivers
 
         #region Overrides
 
-        public override async Task<IDisplayResult> DisplayAsync(Map map, BuildPartDisplayContext context)
+        public override async Task<IDisplayResult> DisplayAsync(Map part, BuildPartDisplayContext context)
         {
-            var tiles = await GetTilesAsync(map);
+            var tiles = await GetTilesAsync(part);
 
             return Initialize<MapViewModel>("Map", model =>
             {
-                model.ContentItem = map.ContentItem;
+                model.ContentItem = part.ContentItem;
                 model.Height = tiles.As<MapTiles>().Height;
-                model.InitialZoom = map.InitialZoom;
-                model.MaxZoom = map.MaxZoom;
-                model.MinZoom = map.MinZoom;
+                model.InitialZoom = part.InitialZoom;
+                model.MaxZoom = part.MaxZoom;
+                model.MinZoom = part.MinZoom;
                 model.Width = tiles.As<MapTiles>().Width;
 
                 // needs trailing slash otherwise doesn't load tile images
                 model.TileRoot = _mediaFileStore.MapPathToPublicUrl(GetTileRoot(tiles)) + "/";
             })
             .Location("Detail", "Content:5");
+        }
+
+
+        public override async Task<IDisplayResult> EditAsync(Map part, BuildPartEditorContext context)
+        {
+            var tiles = await GetTilesAsync(part);
+
+            return Initialize<MapEditViewModel>(GetEditorShapeType(context), model =>
+            {
+                model.ContentItem = part.ContentItem;
+
+                if (tiles != null)
+                {
+                    model.Height = tiles.As<MapTiles>().Height;
+                    model.Width = tiles.As<MapTiles>().Width;
+
+                    // needs trailing slash otherwise doesn't load tile images
+                    model.TileRoot = _mediaFileStore.MapPathToPublicUrl(GetTileRoot(tiles)) + "/";
+                }
+            });
+        }
+
+        public override async Task<IDisplayResult> UpdateAsync(Map part, IUpdateModel updater, UpdatePartEditorContext context)
+        {
+            var viewModel = new MapEditViewModel();
+
+            await updater.TryUpdateModelAsync(viewModel, Prefix);
+
+            return Edit(part, context);
         }
 
         #endregion
@@ -70,6 +99,12 @@ namespace Etch.OrchardCore.Leaflet.Drivers
         private async Task<ContentItem> GetTilesAsync(Map map)
         {
             var field = map.Get<ContentPickerField>(Constants.MapTilesContentFieldName);
+
+            if (field == null)
+            {
+                return null;
+            }
+
             return await _contentManager.GetAsync(field.ContentItemIds.First());
         }
 

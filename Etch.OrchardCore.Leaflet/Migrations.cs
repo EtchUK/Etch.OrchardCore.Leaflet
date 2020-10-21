@@ -148,5 +148,14 @@ namespace Etch.OrchardCore.Leaflet
 
             return 3;
         }
+
+        public int UpdateFrom3()
+        {
+            _contentDefinitionManager.AlterPartDefinition("PoiPart", builder => builder
+                .Attachable()
+                .WithDescription("Provides configuration for POI markers."));
+
+            return 4;
+        }
     }
 }

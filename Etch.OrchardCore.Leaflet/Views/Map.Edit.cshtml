@@ -1,0 +1,73 @@
+﻿@using Etch.OrchardCore.Leaflet.Models;
+@using OrchardCore.ContentManagement.Metadata.Settings;
+
+@model Etch.OrchardCore.Leaflet.ViewModels.MapEditViewModel
+
+@inject IContentManager ContentManager
+@inject OrchardCore.ContentManagement.Metadata.IContentDefinitionManager ContentDefinitionManager
+
+@{
+    var poiTemplatePlaceholderId = Html.Id("poiTemplatePlaceholderId");
+    var poiContentTypes = ContentDefinitionManager.ListTypeDefinitions().Where(t => t.GetSettings<ContentTypeSettings>().Stereotype == "POI");
+    var parentContentType = Model.ContentItem.ContentType;
+    string partName = ((dynamic)Model).Metadata.Name;
+}
+
+<script asp-src="~/Etch.OrchardCore.Leaflet/Scripts/admin.js" asp-name="leafletmapadmin" depends-on="jquery" at="Foot"></script>
+<script asp-name="jQuery-ui" at="Foot"></script>
+
+@if (!Model.HasTiles)
+{
+    <p class="alert alert-warning">Unable to add POIs until map tiles has been chosen.</p>
+}
+
+@if (Model.HasTiles)
+{
+    <style asp-src="~/Etch.OrchardCore.Leaflet/Styles/admin.css" at="Head"></style>
+
+    <script at="Foot">
+    window.initializeMap({ domId: 'map', height: @Model.Height, isAdmin: true, isManagePOIs: true, tileRoot: '@Model.TileRoot', width: @Model.Width });
+    </script>
+
+    <div class="leaflet leaflet--admin">
+        <div id="map"></div>
+    </div>
+
+    <div class="modal fade" id="modalPoiMarkers" tabindex="-1" role="dialog" aria-labelledby="poi-picker-label" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">@T["Available POIs"]</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div class="card-columns">
+                        @foreach (var type in poiContentTypes)
+                        {
+                            <div class="card">
+                                <div class="card-body">
+                                    <h4>@type.DisplayName.Replace("POI", "")</h4>
+                                </div>
+                                <div class="card-footer text-muted text-xs-right">
+                                    <button type="button"
+                                            class="btn btn-primary btn-sm add-poi"
+                                            data-icon-marker-path="@(type.Parts.SingleOrDefault(x => x.Name == nameof(PoiPart)).GetSettings<PoiPartSettings>().MarkerIcon)"
+                                            data-icon-marker-height="@(type.Parts.SingleOrDefault(x => x.Name == nameof(PoiPart)).GetSettings<PoiPartSettings>().MarkerIconHeight)"
+                                            data-icon-marker-width="@(type.Parts.SingleOrDefault(x => x.Name == nameof(PoiPart)).GetSettings<PoiPartSettings>().MarkerIconWidth)">
+                                        @T["Add"]
+                                    </button>
+                                </div>
+                            </div>
+                        }
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">@T["Cancel"]</button>
+                </div>
+            </div>
+        </div>
+    </div>
+}
+

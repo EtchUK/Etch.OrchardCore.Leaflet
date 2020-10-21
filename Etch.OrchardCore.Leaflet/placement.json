@@ -16,6 +16,11 @@
       ]
     }
   ],
+  "Map_Edit": [
+    {
+      "place": "Parts:0#POIs:20"
+    }
+  ],
   "MapTiles_Edit": [
     {
       "place": "Content:20",
@@ -37,17 +42,23 @@
     {
       "place": "Parts#Zoom:1",
       "differentiator": "Map-InitialZoom",
-      "contentType": [ "Map" ]
+      "contentType": [
+        "Map"
+      ]
     },
     {
       "place": "Parts#Zoom:2",
       "differentiator": "Map-MaxZoom",
-      "contentType": [ "Map" ]
+      "contentType": [
+        "Map"
+      ]
     },
     {
       "place": "Parts#Zoom:3",
       "differentiator": "Map-MinZoom",
-      "contentType": [ "Map" ]
+      "contentType": [
+        "Map"
+      ]
     }
   ],
   "TitlePart_Edit": [

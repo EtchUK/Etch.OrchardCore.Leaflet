@@ -89,7 +89,10 @@ module.exports = {
             },
         ],
     },
-    externals: {},
+    externals: {
+        bootstrap: 'bootstrap',
+        jquery: 'jQuery',
+    },
     output: {
         filename: '[name].js',
         path: path.resolve(__dirname, './wwwroot/Scripts/'),

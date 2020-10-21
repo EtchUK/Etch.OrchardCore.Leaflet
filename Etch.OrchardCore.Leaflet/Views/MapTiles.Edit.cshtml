@@ -34,7 +34,7 @@
     <style asp-src="~/Etch.OrchardCore.Leaflet/Styles/admin.css" at="Head"></style>
 
     <script at="Foot">
-    window.initializeMap({ domId: 'map', height: @Model.Height, tileRoot: '@Model.TileRoot', width: @Model.Width });
+    window.initializeMap({ domId: 'map', height: @Model.Height, isAdmin: true, tileRoot: '@Model.TileRoot', width: @Model.Width });
     </script>
 
     <h4>Preview</h4>

@@ -3,11 +3,12 @@ import 'leaflet-deepzoom';
 import 'leaflet-css';
 
 import IInitializeOptions from '../../Common/js/models/initializeOptions';
+import invalidateOnTabClick from '../../Admin/js/map/invalidateOnTabClick';
+import poiManagement from '../../Admin/js/map/poiManagement';
 
-const initialize = (options: IInitializeOptions) => {
+const initialize = (options: IInitializeOptions): L.Map => {
     const map = L.map(options.domId, {
         attributionControl: false,
-        maxBoundsViscosity: 1.0,
         maxZoom: options.maxZoom || 14,
         minZoom: options.minZoom || 8,
         zoomControl: true,
@@ -27,6 +28,11 @@ const initialize = (options: IInitializeOptions) => {
     map.fitBounds(dzLayer.options.bounds);
     map.setMaxBounds(dzLayer.options.bounds);
     map.setZoom(options.initialZoom || 11);
+
+    invalidateOnTabClick(map, options);
+    poiManagement(map, options);
+
+    return map;
 };
 
 export default initialize;

@@ -1,0 +1,19 @@
+﻿@model Etch.OrchardCore.Leaflet.ViewModels.PoiPartSettingsViewModel
+
+<div class="form-group">
+    <label asp-for="MarkerIcon">@T["Marker Icon"]</label>
+    <input asp-for="MarkerIcon" class="form-control" />
+    <span class="hint">@T["Path to icon to be used as POI marker."]</span>
+</div>
+
+<div class="form-group">
+    <label asp-for="MarkerIconHeight">@T["Marker Icon Height"]</label>
+    <input asp-for="MarkerIconHeight" class="form-control" />
+    <span class="hint">@T["Height to of POI marker icon."]</span>
+</div>
+
+<div class="form-group">
+    <label asp-for="MarkerIconWidth">@T["Marker Icon Width"]</label>
+    <input asp-for="MarkerIconWidth" class="form-control" />
+    <span class="hint">@T["Width to of POI marker icon."]</span>
+</div>

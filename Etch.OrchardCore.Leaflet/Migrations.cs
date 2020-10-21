@@ -1,4 +1,5 @@
 ﻿using Etch.OrchardCore.Leaflet.Indexes;
+using Etch.OrchardCore.Leaflet.Models;
 using OrchardCore.Autoroute.Models;
 using OrchardCore.ContentFields.Fields;
 using OrchardCore.ContentFields.Settings;
@@ -156,6 +157,18 @@ namespace Etch.OrchardCore.Leaflet
                 .WithDescription("Provides configuration for POI markers."));
 
             return 4;
+        }
+
+        public int UpdateFrom4()
+        {
+            _contentDefinitionManager.AlterPartDefinition(nameof(MapPoisPart), builder => builder
+                .WithDescription("Collection of POIs for a map.")
+                .WithDisplayName("Map POIs"));
+
+            _contentDefinitionManager.AlterTypeDefinition(Constants.MapContentType, type => type
+                .WithPart(nameof(MapPoisPart)));
+
+            return 5;
         }
     }
 }

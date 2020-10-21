@@ -13,7 +13,7 @@ using System.Threading.Tasks;
 
 namespace Etch.OrchardCore.Leaflet.Drivers
 {
-    public class MapDisplay : ContentPartDisplayDriver<Map>
+    public class MapPoisPartDisplay : ContentPartDisplayDriver<MapPoisPart>
     {
         #region Dependencies
 
@@ -24,7 +24,7 @@ namespace Etch.OrchardCore.Leaflet.Drivers
 
         #region Constructor
 
-        public MapDisplay(IContentManager contentManager, IMediaFileStore mediaFileStore)
+        public MapPoisPartDisplay(IContentManager contentManager, IMediaFileStore mediaFileStore)
         {
             _contentManager = contentManager;
             _mediaFileStore = mediaFileStore;
@@ -34,23 +34,32 @@ namespace Etch.OrchardCore.Leaflet.Drivers
 
         #region Overrides
 
-        public override async Task<IDisplayResult> DisplayAsync(Map part, BuildPartDisplayContext context)
+        public override async Task<IDisplayResult> EditAsync(MapPoisPart part, BuildPartEditorContext context)
         {
             var tiles = await GetTilesAsync(part);
 
-            return Initialize<MapViewModel>("Map", model =>
+            return Initialize<MapPoisEditViewModel>(GetEditorShapeType(context), model =>
             {
                 model.ContentItem = part.ContentItem;
-                model.Height = tiles.As<MapTiles>().Height;
-                model.InitialZoom = part.InitialZoom;
-                model.MaxZoom = part.MaxZoom;
-                model.MinZoom = part.MinZoom;
-                model.Width = tiles.As<MapTiles>().Width;
 
-                // needs trailing slash otherwise doesn't load tile images
-                model.TileRoot = _mediaFileStore.MapPathToPublicUrl(GetTileRoot(tiles)) + "/";
-            })
-            .Location("Detail", "Content:5");
+                if (tiles != null)
+                {
+                    model.Height = tiles.As<MapTiles>().Height;
+                    model.Width = tiles.As<MapTiles>().Width;
+
+                    // needs trailing slash otherwise doesn't load tile images
+                    model.TileRoot = _mediaFileStore.MapPathToPublicUrl(GetTileRoot(tiles)) + "/";
+                }
+            });
+        }
+
+        public override async Task<IDisplayResult> UpdateAsync(MapPoisPart part, IUpdateModel updater, UpdatePartEditorContext context)
+        {
+            var viewModel = new MapEditViewModel();
+
+            await updater.TryUpdateModelAsync(viewModel, Prefix);
+
+            return Edit(part, context);
         }
 
         #endregion
@@ -67,9 +76,10 @@ namespace Etch.OrchardCore.Leaflet.Drivers
             return contentItem.As<MapTiles>().GetTileRoot();
         }
 
-        private async Task<ContentItem> GetTilesAsync(Map map)
+        private async Task<ContentItem> GetTilesAsync(MapPoisPart map)
         {
-            var field = map.Get<ContentPickerField>(Constants.MapTilesContentFieldName);
+            var field = map.ContentItem.Get<ContentPart>(Constants.MapContentType)?
+                .Get<ContentPickerField>(Constants.MapTilesContentFieldName);
 
             if (field == null)
             {

@@ -24,6 +24,9 @@ namespace Etch.OrchardCore.Leaflet
             services.AddContentPart<Map>();
             services.AddScoped<IContentPartDisplayDriver, MapDisplay>();
 
+            services.AddContentPart<MapPoisPart>();
+            services.AddScoped<IContentPartDisplayDriver, MapPoisPartDisplay>();
+
             services.AddContentPart<PoiPart>();
             services.AddScoped<IContentTypePartDefinitionDisplayDriver, PoiPartSettingsDisplayDriver>();
 

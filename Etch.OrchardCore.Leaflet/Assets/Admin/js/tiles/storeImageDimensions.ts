@@ -1,4 +1,4 @@
-const storeImageDimensions = (e: Event) => {
+const storeImageDimensions = (e: Event): boolean => {
     e.preventDefault();
 
     const draftBtn = document.querySelector('button[value="submit.Publish"]') as HTMLButtonElement;

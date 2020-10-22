@@ -13,7 +13,7 @@ declare global
     }
 }
 
-const setup = () => {
+const setup = (): void => {
     window.initializeMap = initialize
 };
 

@@ -12,14 +12,17 @@ module.exports = {
     module: {
         rules: [
             {
+                test: /\.(ts|tsx)$/,
                 enforce: 'pre',
-                test: /(\.ts(x?)$)/,
+                use: [
+                    {
+                        options: {
+                            eslintPath: require.resolve('eslint'),
+                        },
+                        loader: require.resolve('eslint-loader'),
+                    },
+                ],
                 exclude: /node_modules/,
-                loader: 'tslint-loader',
-                options: {
-                    configFile: path.join(process.cwd(), './tslint.json'),
-                    emitErrors: true,
-                },
             },
             {
                 test: /(\.ts(x?)$)/,
@@ -90,7 +93,6 @@ module.exports = {
         ],
     },
     externals: {
-        bootstrap: 'bootstrap',
         jquery: 'jQuery',
     },
     output: {

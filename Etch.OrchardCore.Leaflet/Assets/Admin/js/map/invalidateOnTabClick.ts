@@ -2,7 +2,7 @@ import IInitialiseOptions from "../../../Common/js/models/initializeOptions";
 
 const TAB_CHANGE_DELAY = 200;
 
-const invalidateOnTabClick = (map: L.Map, options: IInitialiseOptions) => {
+const invalidateOnTabClick = (map: L.Map, options: IInitialiseOptions): void => {
     if (!options.isAdmin) {
         return;
     }
@@ -15,7 +15,7 @@ const invalidateOnTabClick = (map: L.Map, options: IInitialiseOptions) => {
                 map.invalidateSize();
             }, TAB_CHANGE_DELAY);
         });
-    };
+    }
 };
 
 export default invalidateOnTabClick;

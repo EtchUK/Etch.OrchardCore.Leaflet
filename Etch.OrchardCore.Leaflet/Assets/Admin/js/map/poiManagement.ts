@@ -1,11 +1,14 @@
+import { Modal } from 'bootstrap';
 import * as L from 'leaflet';
 
 import IInitialiseOptions from "../../../Common/js/models/initializeOptions";
 
-const poiManagement = (map: L.Map, options: IInitialiseOptions) => {
+const poiManagement = (map: L.Map, options: IInitialiseOptions): void => {
     if (!options.isManagePOIs) {
         return;
     }
+
+    const $modal = document.querySelector('#modalPoiMarkers')
 
     map.on('click', (e: L.LeafletMouseEvent) => {
         const $addPoiButtons = document.querySelectorAll('#modalPoiMarkers .add-poi');
@@ -26,7 +29,9 @@ const poiManagement = (map: L.Map, options: IInitialiseOptions) => {
 
             L.marker([e.latlng.lat, e.latlng.lng], { icon: markerIcon }).addTo(map);
 
-            ($('#modalPoiMarkers') as any).modal('hide');
+            if ($modal) {
+                new Modal($modal).hide();
+            }
 
             dispose();
         };
@@ -43,7 +48,9 @@ const poiManagement = (map: L.Map, options: IInitialiseOptions) => {
             ($addPoiButtons[i] as HTMLButtonElement).addEventListener('click', addPOI);
         }
 
-        ($('#modalPoiMarkers') as any).modal();
+        if ($modal) {
+            new Modal($modal).show();
+        }
     });
 };
 

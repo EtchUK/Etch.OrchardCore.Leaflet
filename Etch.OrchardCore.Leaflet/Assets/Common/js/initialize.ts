@@ -6,6 +6,7 @@ import IInitializeOptions from '../../Common/js/models/initializeOptions';
 import invalidateOnTabClick from '../../Admin/js/map/invalidateOnTabClick';
 import poiManagement from '../../Admin/js/map/poiManagement';
 
+
 const initialize = (options: IInitializeOptions): L.Map => {
     const map = L.map(options.domId, {
         attributionControl: false,
@@ -17,7 +18,7 @@ const initialize = (options: IInitializeOptions): L.Map => {
     // Workaround for global map referenced in deepzoom init
     // https://github.com/alfarisi/leaflet-deepzoom/issues/8
     window.map = map;
-    const dzLayer = (L.tileLayer as any)
+    const dzLayer: L.TileLayer.DeepZoom = L.tileLayer
         .deepzoom(options.tileRoot, {
             width: options.width,
             height: options.height,
@@ -25,8 +26,8 @@ const initialize = (options: IInitializeOptions): L.Map => {
         .addTo(map);
     window.map = undefined;
 
-    map.fitBounds(dzLayer.options.bounds);
-    map.setMaxBounds(dzLayer.options.bounds);
+    map.fitBounds(dzLayer.options.bounds as L.LatLngBoundsExpression);
+    map.setMaxBounds(dzLayer.options.bounds as L.LatLngBoundsExpression);
     map.setZoom(options.initialZoom || 11);
 
     invalidateOnTabClick(map, options);

@@ -1,12 +1,12 @@
 import { Modal } from 'bootstrap';
 import * as L from 'leaflet';
+import { v4 as uuidv4 } from 'uuid';
 
 import addPoi from '../../../Common/js/map/addPoi';
 import addPois from '../../../Common/js/map/addPois';
 import IIcon from '../../../Common/js/models/icon';
 import IInitialiseOptions from "../../../Common/js/models/initializeOptions";
 import IMapMarker from '../../../Common/js/models/mapMarker';
-import guid from '../../../Common/js/utils/guid';
 
 const CLICK_DELAY = 10;
 
@@ -81,7 +81,7 @@ const poiManagement = (map: L.Map, options: IInitialiseOptions): void => {
                 createEditorUrl: $placeholder?.getAttribute('data-buildeditorurl'),
                 partName: $btn.getAttribute('data-part-name'),
                 parentContentType: $btn.getAttribute('data-parent-content-type'),
-                prefix: guid(),
+                prefix: uuidv4(),
                 prefixesName: $btn.getAttribute('data-prefixes-name'),
                 targetId,
                 type: $btn.getAttribute('data-widget-type')

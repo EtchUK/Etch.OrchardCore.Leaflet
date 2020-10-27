@@ -30,46 +30,40 @@ namespace Etch.OrchardCore.Leaflet.Controllers
             _updateModelAccessor = updateModelAccessor;
         }
 
-        public async Task<IActionResult> BuildEditor(string id, string prefix, string prefixesName, string contentTypesName, string targetId, bool flowmetadata, string parentContentType, string partName)
+        public async Task<IActionResult> BuildEditor(BuildEditorViewModel model)
         {
-            if (string.IsNullOrWhiteSpace(id))
+            if (string.IsNullOrWhiteSpace(model.Id))
             {
                 return NotFound();
             }
 
-            var contentItem = await _contentManager.NewAsync(id);
+            var contentItem = await _contentManager.NewAsync(model.Id);
             var cardCollectionType = nameof(MapPoisPart);
 
-            //Create a Card Shape
-            dynamic contentCard = await _shapeFactory.New.ContentCard(
+            model.EditorShape = await _shapeFactory.New.ContentCard(
                 //Updater is the controller for AJAX Requests
                 Updater: _updateModelAccessor.ModelUpdater,
                 //Shape Specific
                 CollectionShapeType: cardCollectionType,
                 ContentItem: contentItem,
                 BuildEditor: true,
-                ParentContentType: parentContentType,
-                CollectionPartName: partName,
+                ParentContentType: model.ParentContentType,
+                CollectionPartName: model.PartName,
                 ContainedContentTypes: _contentDefinitionManager.ListTypeDefinitions().Where(t => t.GetSettings<ContentTypeSettings>().Stereotype == "POI"),
                 //Card Specific Properties
-                TargetId: targetId,
+                TargetId: model.TargetId,
                 Inline: false,
                 CanMove: false,
                 CanDelete: true,
                 //Input hidden
                 //Prefixes
-                HtmlFieldPrefix: prefix,
-                PrefixesId: prefixesName.Replace('.', '_'),
-                PrefixesName: prefixesName,
+                HtmlFieldPrefix: model.Prefix,
+                PrefixesId: model.PrefixesName.Replace('.', '_'),
+                PrefixesName: model.PrefixesName,
                 //ContentTypes
-                ContentTypesId: contentTypesName.Replace('.', '_'),
-                ContentTypesName: contentTypesName
+                ContentTypesId: model.ContentTypesName.Replace('.', '_'),
+                ContentTypesName: model.ContentTypesName
             );
-
-            var model = new BuildEditorViewModel
-            {
-                EditorShape = contentCard
-            };
 
             return View("Display", model);
         }

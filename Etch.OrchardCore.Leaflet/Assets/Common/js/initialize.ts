@@ -26,8 +26,11 @@ const initialize = (options: IInitializeOptions): L.Map => {
         .addTo(map);
     window.map = undefined;
 
-    map.fitBounds(dzLayer.options.bounds as L.LatLngBoundsExpression);
-    map.setMaxBounds(dzLayer.options.bounds as L.LatLngBoundsExpression);
+    if (dzLayer.options.bounds instanceof L.LatLngBounds) {
+        map.fitBounds(dzLayer.options.bounds);
+        map.setMaxBounds(dzLayer.options.bounds);
+    }
+    
     map.setZoom(options.initialZoom || 11);
 
     displayPois(map, options);

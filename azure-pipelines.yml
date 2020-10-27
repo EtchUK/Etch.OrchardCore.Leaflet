@@ -4,25 +4,25 @@ resources:
 trigger:
   tags:
     include:
-      - '*'
+      - "*"
   branches:
     include:
       - master
 
 variables:
-  buildConfiguration: 'Release'
+  buildConfiguration: "Release"
 
 stages:
   - stage: build
     displayName: Build
     variables:
-      - group: 'Global'
+      - group: "Global"
     jobs:
       - job: Build
         pool:
-          vmImage: 'windows-latest'
-      steps:
-        - task: SonarCloudPrepare@1
+          vmImage: "windows-latest"
+        steps:
+          - task: SonarCloudPrepare@1
             displayName: "Prepare SonarCloud Analysis"
             inputs:
               SonarCloud: "SC"
@@ -31,41 +31,41 @@ stages:
               projectKey: "Etch.OrchardCore.Leaflet"
               projectName: "Etch.OrchardCore.Leaflet"
 
-        - task: tmarkovski.projectversionasvariable.versionintovariable.projectversionasvariable@1
-          displayName: "Get Project Version as variables from Etch.OrchardCore.Leaflet.csproj"
-          inputs:
-            path: ./Etch.OrchardCore.Leaflet/Etch.OrchardCore.Leaflet.csproj
+          - task: tmarkovski.projectversionasvariable.versionintovariable.projectversionasvariable@1
+            displayName: "Get Project Version as variables from Etch.OrchardCore.Leaflet.csproj"
+            inputs:
+              path: ./Etch.OrchardCore.Leaflet/Etch.OrchardCore.Leaflet.csproj
 
-        - task: MSBuild@1
-          displayName: "Build tile generator"
-          inputs:
-            solution: "./Etch.OrchardCore.LeafletTileGenerator/Etch.OrchardCore.LeafletTileGenerator.csproj"
-            configuration: $(BuildConfiguration)
+          - task: MSBuild@1
+            displayName: "Build tile generator"
+            inputs:
+              solution: "./Etch.OrchardCore.LeafletTileGenerator/Etch.OrchardCore.LeafletTileGenerator.csproj"
+              configuration: $(BuildConfiguration)
 
-        - task: DotNetCoreCLI@2
-          displayName: "Build module"
-          inputs:
-            arguments: "-c $(BuildConfiguration)"
-            projects: "./Etch.OrchardCore.Leaflet/Etch.OrchardCore.Leaflet.csproj"
+          - task: DotNetCoreCLI@2
+            displayName: "Build module"
+            inputs:
+              arguments: "-c $(BuildConfiguration)"
+              projects: "./Etch.OrchardCore.Leaflet/Etch.OrchardCore.Leaflet.csproj"
 
-        - task: SonarCloudAnalyze@1
-          displayName: "Run SonarCloud Analysis"
+          - task: SonarCloudAnalyze@1
+            displayName: "Run SonarCloud Analysis"
 
-        - task: DotNetCoreCLI@2
-          displayName: "dotnet pack"
-          inputs:
-            command: pack
-            packagesToPack: "./Etch.OrchardCore.Leaflet/Etch.OrchardCore.Leaflet.csproj"
-            versioningScheme: byEnvVar
-            versionEnvVar: "VERSION_MAJORMINORPATCH"
+          - task: DotNetCoreCLI@2
+            displayName: "dotnet pack"
+            inputs:
+              command: pack
+              packagesToPack: "./Etch.OrchardCore.Leaflet/Etch.OrchardCore.Leaflet.csproj"
+              versioningScheme: byEnvVar
+              versionEnvVar: "VERSION_MAJORMINORPATCH"
 
-        - task: PublishPipelineArtifact@0
-          displayName: "Publish Pipeline Artifact"
-          inputs:
-            targetPath: "$(Build.ArtifactStagingDirectory)"
+          - task: PublishPipelineArtifact@0
+            displayName: "Publish Pipeline Artifact"
+            inputs:
+              targetPath: "$(Build.ArtifactStagingDirectory)"
 
-        - task: SonarCloudPublish@1
-          displayName: "Publish SonarCloud Results"
+          - task: SonarCloudPublish@1
+            displayName: "Publish SonarCloud Results"
 
   - stage: publish
     displayName: NuGet Publish
@@ -74,16 +74,16 @@ stages:
     jobs:
       - job: Publish
         pool:
-          vmImage: 'windows-latest'
+          vmImage: "windows-latest"
         steps:
           - task: DownloadPipelineArtifact@2
             inputs:
-              source: 'current'
-              path: '$(Pipeline.Workspace)'
+              source: "current"
+              path: "$(Pipeline.Workspace)"
           - task: NuGetCommand@2
-            displayName: 'NuGet push'
+            displayName: "NuGet push"
             inputs:
               command: push
-              packagesToPush: '$(Pipeline.Workspace)/**/drop/*.nupkg'
+              packagesToPush: "$(Pipeline.Workspace)/**/drop/*.nupkg"
               nuGetFeedType: external
-              publishFeedCredentials: 'NuGet'
+              publishFeedCredentials: "NuGet"

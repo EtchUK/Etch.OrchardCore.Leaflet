@@ -6,6 +6,7 @@ export default interface IInitialiseOptions {
     isManagePOIs: boolean;
     maxZoom: number;
     minZoom: number;
+    pois: string;
     tileRoot: string;
     width: number;
 }

@@ -1,16 +1,26 @@
 ﻿@using Etch.OrchardCore.Leaflet.Models;
+@using Newtonsoft.Json;
+@using Newtonsoft.Json.Serialization; 
+@using OrchardCore.ContentManagement.Display;
+@using OrchardCore.ContentManagement.Metadata;
 @using OrchardCore.ContentManagement.Metadata.Settings;
+@using OrchardCore.Mvc.Utilities;
 
 @model Etch.OrchardCore.Leaflet.ViewModels.MapPoisEditViewModel
 
 @inject IContentManager ContentManager
-@inject OrchardCore.ContentManagement.Metadata.IContentDefinitionManager ContentDefinitionManager
+@inject IContentDefinitionManager ContentDefinitionManager
+@inject IContentItemDisplayManager ContentItemDisplayManager
 
 @{
     var poiTemplatePlaceholderId = Html.Id("poiTemplatePlaceholderId");
     var poiContentTypes = ContentDefinitionManager.ListTypeDefinitions().Where(t => t.GetSettings<ContentTypeSettings>().Stereotype == "POI");
     var parentContentType = Model.ContentItem.ContentType;
     string partName = ((dynamic)Model).Metadata.Name;
+    string pois = JsonConvert.SerializeObject(Model.Markers, new JsonSerializerSettings
+    {
+        ContractResolver = new CamelCasePropertyNamesContractResolver()
+    });
 }
 
 <script asp-src="~/Etch.OrchardCore.Leaflet/Scripts/admin.js" asp-name="leafletmapadmin" depends-on="jquery" at="Foot"></script>
@@ -26,12 +36,78 @@
     <style asp-src="~/Etch.OrchardCore.Leaflet/Styles/admin.css" at="Head"></style>
 
     <script at="Foot">
-    window.initializeMap({ domId: 'map', height: @Model.Height, isAdmin: true, isManagePOIs: true, tileRoot: '@Model.TileRoot', width: @Model.Width });
+        window.initializeMap({ domId: 'map', height: @Model.Height, isAdmin: true, isManagePOIs: true, pois: '@Html.Raw(pois)', tileRoot: '@Model.TileRoot', width: @Model.Width });
     </script>
 
     <div class="leaflet leaflet--admin">
         <div id="map"></div>
     </div>
+
+    <div class="form-group">
+        <h3>POIs</h3>
+
+        <p class="alert alert-info poi-empty @(Model.MapPoisPart.ContentItems.Any() ? "d-none" : string.Empty)">Click on map to add POI.</p>
+
+        <div id="@poiTemplatePlaceholderId" class="widget-template-placeholder widget-template-placeholder-bagpart bagpart-@partName.HtmlClassify() row mx-0" data-buildeditorurl="@Url.Action("BuildEditor", "Admin", new { area = "Etch.OrchardCore.Leaflet" })">
+            @{ var htmlFieldPrefix = this.ViewContext.ViewData.TemplateInfo.HtmlFieldPrefix; }
+
+            @foreach (var poi in Model.MapPoisPart.ContentItems)
+            {
+                //Create a Card Shape
+                dynamic contentCard = await New.ContentCard(
+                    // FOR Updater
+                    CollectionShape: Model,
+                    //Shape Specific
+                    CollectionShapeType: nameof(MapPoisPart),
+                    ContentItem: poi,
+                    BuildEditor: true,
+                    ParentContentType: parentContentType,
+                    CollectionPartName: partName,
+                    //Card Specific Properties
+                    TargetId: poiContentTypes,
+                    Inline: false,
+                    CanMove: false,
+                    CanDelete: true,
+                    //Input hidden
+                    //Prefixes
+                    PrefixValue: poi.ContentItemId,
+                    HtmlFieldPrefix: htmlFieldPrefix,
+                    PrefixesId: Html.IdFor(x => x.Prefixes),
+                    PrefixesName: Html.NameFor(x => x.Prefixes),
+                    //Content Types
+                    ContentTypesId: Html.IdFor(x => x.ContentTypes),
+                    ContentTypesName: Html.NameFor(x => x.ContentTypes)
+                );
+
+                @await DisplayAsync(contentCard)
+            }
+        </div>
+    </div>
+
+    @* Rendered only once in case multiple MapPoisPart are on the page *@
+    @if (Context.Items["MapPoisPart.Edit"] == null)
+    {
+        Context.Items["MapPoisPart.Edit"] = new object();
+        <script asp-src="~/OrchardCore.Flows/Scripts/flows.edit.min.js"
+                debug-src="~/OrchardCore.Flows/Scripts/flows.edit.js" at="Foot" depends-on="admin"></script>
+        <style asp-src="~/OrchardCore.Widgets/Styles/widgetslist.edit.min.css"
+               debug-src="~/OrchardCore.Widgets/Styles/widgetslist.edit.css"></style>
+        <style asp-src="~/OrchardCore.Flows/Styles/flows.edit.min.css"
+               debug-src="~/OrchardCore.Flows/Styles/flows.edit.css"></style>
+    }
+
+    @* Rendered only once per type to initialize the scripts its editor will need *@
+    @foreach (var type in poiContentTypes)
+    {
+        @if (Context.Items["MapPoisPart.Edit:" + type.Name] == null)
+        {
+            Context.Items["MapPoisPart.Edit:" + type.Name] = new object();
+
+            // Render a mock widget so that its resources are included in the page
+            var contentItem = await ContentManager.NewAsync(type.Name);
+            await DisplayAsync(await ContentItemDisplayManager.BuildEditorAsync(contentItem, Model.Updater, true, "", Guid.NewGuid().ToString("n")));
+        }
+    }
 
     <div class="modal fade" id="modalPoiMarkers" tabindex="-1" role="dialog" aria-labelledby="poi-picker-label" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
@@ -49,10 +125,19 @@
                             <div class="card">
                                 <div class="card-body">
                                     <h4>@type.DisplayName.Replace("POI", "")</h4>
+                                    <p>@type.Settings["Description"]</p>
                                 </div>
                                 <div class="card-footer text-muted text-xs-right">
                                     <button type="button"
                                             class="btn btn-primary btn-sm add-poi"
+                                            data-target-id="@poiTemplatePlaceholderId"
+                                            data-parent-content-type="@parentContentType"
+                                            data-part-name="@partName"
+                                            data-prefixes-name="@Html.NameFor(x => x.Prefixes)"
+                                            data-contenttypes-name="@Html.NameFor(x => x.ContentTypes)"
+                                            data-widget-type="@type.Name"
+                                            data-dismiss="modal"
+                                            href="javascript:;"
                                             data-icon-marker-path="@(type.Parts.SingleOrDefault(x => x.Name == nameof(PoiPart)).GetSettings<PoiPartSettings>().MarkerIcon)"
                                             data-icon-marker-height="@(type.Parts.SingleOrDefault(x => x.Name == nameof(PoiPart)).GetSettings<PoiPartSettings>().MarkerIconHeight)"
                                             data-icon-marker-width="@(type.Parts.SingleOrDefault(x => x.Name == nameof(PoiPart)).GetSettings<PoiPartSettings>().MarkerIconWidth)">

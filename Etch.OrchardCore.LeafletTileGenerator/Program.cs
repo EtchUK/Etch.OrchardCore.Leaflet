@@ -4,7 +4,7 @@ using System.IO;
 
 namespace Etch.OrchardCore.LeafletTileGenerator
 {
-    class Program
+    static class Program
     {
         static void Main(string[] args)
         {

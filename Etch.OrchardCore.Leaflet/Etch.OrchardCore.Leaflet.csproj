@@ -10,6 +10,7 @@
     <Authors>Etch UK Ltd.</Authors>
     <Description>Orchard Core module for creating interactive maps utilising Leaflet.</Description>
     <PackageTags>orchardcore;etchuk</PackageTags>
+    <ProjectGuid>DF2FF4F8-B52A-4FA7-9730-6E9FD5823E1B</ProjectGuid>
   </PropertyGroup>
 
   <ItemGroup> 

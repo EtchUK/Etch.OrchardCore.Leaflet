@@ -45,17 +45,17 @@ namespace Etch.OrchardCore.Leaflet.Drivers
             });
         }
 
-        public override async Task<IDisplayResult> UpdateAsync(MapTiles model, IUpdateModel updater, UpdatePartEditorContext context)
+        public override async Task<IDisplayResult> UpdateAsync(MapTiles part, IUpdateModel updater, UpdatePartEditorContext context)
         {
             var viewModel = new MapTilesViewModel();
 
             await updater.TryUpdateModelAsync(viewModel, Prefix, t => t.Height, t => t.PublishAfterProcessed, t => t.Width);
 
-            model.Height = viewModel.Height;
-            model.PublishAfterProcessed = viewModel.PublishAfterProcessed;
-            model.Width = viewModel.Width;
+            part.Height = viewModel.Height;
+            part.PublishAfterProcessed = viewModel.PublishAfterProcessed;
+            part.Width = viewModel.Width;
 
-            return Edit(model, context);
+            return Edit(part, context);
         }
 
         #endregion

@@ -34,16 +34,16 @@ namespace Etch.OrchardCore.Leaflet.Drivers
             });
         }
 
-        public override async Task<IDisplayResult> UpdateAsync(PoiPart model, IUpdateModel updater, UpdatePartEditorContext context)
+        public override async Task<IDisplayResult> UpdateAsync(PoiPart part, IUpdateModel updater, UpdatePartEditorContext context)
         {
             var viewModel = new PoiPartEditViewModel();
 
             await updater.TryUpdateModelAsync(viewModel, Prefix, t => t.Latitude, t => t.Longitude);
 
-            model.Latitude = viewModel.Latitude;
-            model.Longitude = viewModel.Longitude;
+            part.Latitude = viewModel.Latitude;
+            part.Longitude = viewModel.Longitude;
 
-            return Edit(model, context);
+            return Edit(part, context);
         }
 
         #endregion

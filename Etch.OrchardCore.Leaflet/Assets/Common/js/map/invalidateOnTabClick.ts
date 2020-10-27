@@ -1,4 +1,4 @@
-import IInitialiseOptions from "../../../Common/js/models/initializeOptions";
+import IInitialiseOptions from "../models/initializeOptions";
 
 const TAB_CHANGE_DELAY = 200;
 

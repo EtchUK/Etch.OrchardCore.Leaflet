@@ -60,6 +60,13 @@ namespace Etch.OrchardCore.Leaflet
                 pattern: _adminOptions.AdminUrlPrefix + "/Pois/BuildEditor",
                 defaults: new { controller = typeof(AdminController).ControllerName(), action = nameof(AdminController.BuildEditor) }
             );
+            
+            routes.MapAreaControllerRoute(
+                name: "Pois.BuildDisplay",
+                areaName: "Etch.OrchardCore.Leaflet",
+                pattern: "Pois/BuildDisplay",
+                defaults: new { controller = typeof(PoiController).ControllerName(), action = nameof(PoiController.BuildDisplay) }
+            );
         }
     }
 }

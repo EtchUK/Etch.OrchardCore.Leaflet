@@ -1,10 +1,20 @@
-﻿@model Etch.OrchardCore.Leaflet.ViewModels.MapViewModel
+﻿@using Newtonsoft.Json
+@using Newtonsoft.Json.Serialization
+
+@model Etch.OrchardCore.Leaflet.ViewModels.MapViewModel
+
+@{ 
+    string pois = JsonConvert.SerializeObject(Model.Markers, new JsonSerializerSettings
+    {
+        ContractResolver = new CamelCasePropertyNamesContractResolver()
+    });
+}
 
 <style asp-src="~/Etch.OrchardCore.Leaflet/Styles/map.css" at="Head"></style>
 <script asp-src="~/Etch.OrchardCore.Leaflet/Scripts/map.js" asp-name="leafletmap" depends-on="jquery" at="Foot"></script>
 
 <script at="Foot">
-    window.initializeMap({ domId: 'map', height: @Model.Height, initialZoom: @Model.InitialZoom, maxZoom: @Model.MaxZoom, minZoom: @Model.MinZoom, tileRoot: '@Model.TileRoot', width: @Model.Width });
+    window.initializeMap({ contentItemId: '@Model.ContentItem.ContentItemId', domId: 'map', height: @Model.Height, initialZoom: @Model.InitialZoom, maxZoom: @Model.MaxZoom, minZoom: @Model.MinZoom, poiDisplayUrl: '@Url.Action("BuildDisplay", "Poi", new { area = "Etch.OrchardCore.Leaflet" })', pois: '@Html.Raw(pois)', tileRoot: '@Model.TileRoot', width: @Model.Width });
 </script>
 
 <div class="leaflet" style="padding-bottom: @Model.Ratio.ToString("#.000")%;">

@@ -2,7 +2,6 @@
 using Etch.OrchardCore.Leaflet.ViewModels;
 using Microsoft.AspNetCore.Mvc;
 using OrchardCore.ContentManagement;
-using OrchardCore.ContentManagement.Display;
 using OrchardCore.ContentManagement.Metadata;
 using OrchardCore.ContentManagement.Metadata.Settings;
 using OrchardCore.DisplayManagement;
@@ -16,20 +15,17 @@ namespace Etch.OrchardCore.Leaflet.Controllers
     {
         private readonly IContentManager _contentManager;
         private readonly IContentDefinitionManager _contentDefinitionManager;
-        private readonly IContentItemDisplayManager _contentItemDisplayManager;
         private readonly IShapeFactory _shapeFactory;
         private readonly IUpdateModelAccessor _updateModelAccessor;
 
         public AdminController(
             IContentManager contentManager,
             IContentDefinitionManager contentDefinitionManager,
-            IContentItemDisplayManager contentItemDisplayManager,
             IShapeFactory shapeFactory,
             IUpdateModelAccessor updateModelAccessor)
         {
             _contentManager = contentManager;
             _contentDefinitionManager = contentDefinitionManager;
-            _contentItemDisplayManager = contentItemDisplayManager;
             _shapeFactory = shapeFactory;
             _updateModelAccessor = updateModelAccessor;
         }

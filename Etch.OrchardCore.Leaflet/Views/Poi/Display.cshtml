@@ -1,6 +1,6 @@
 ﻿@using Microsoft.AspNetCore.Html
 
-@model Etch.OrchardCore.Leaflet.ViewModels.BuildEditorViewModel
+@model Etch.OrchardCore.Leaflet.ViewModels.BuildDisplayViewModel
 
 @inject OrchardCore.ResourceManagement.IResourceManager ResourceManager
 
@@ -9,7 +9,7 @@
     Layout = "";
 
     var sw = new System.IO.StringWriter();
-    ((IHtmlContent)await DisplayAsync(Model.EditorShape)).WriteTo(sw, HtmlEncoder);
+    ((IHtmlContent)await DisplayAsync(Model.DisplayShape)).WriteTo(sw, HtmlEncoder);
     var content = sw.ToString();
 
     // Gather all registered scripts for this editor

@@ -1,13 +1,17 @@
-﻿using Etch.OrchardCore.Leaflet.Extensions;
+﻿using Etch.OrchardCore.Leaflet.Dtos;
+using Etch.OrchardCore.Leaflet.Extensions;
 using Etch.OrchardCore.Leaflet.Models;
 using Etch.OrchardCore.Leaflet.ViewModels;
 using OrchardCore.ContentFields.Fields;
 using OrchardCore.ContentManagement;
 using OrchardCore.ContentManagement.Display.ContentDisplay;
 using OrchardCore.ContentManagement.Display.Models;
+using OrchardCore.ContentManagement.Metadata;
 using OrchardCore.DisplayManagement.ModelBinding;
 using OrchardCore.DisplayManagement.Views;
 using OrchardCore.Media;
+using System.Collections;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -17,6 +21,7 @@ namespace Etch.OrchardCore.Leaflet.Drivers
     {
         #region Dependencies
 
+        private readonly IContentDefinitionManager _contentDefinitionManager;
         private readonly IContentManager _contentManager;
         private readonly IMediaFileStore _mediaFileStore;
 
@@ -24,8 +29,9 @@ namespace Etch.OrchardCore.Leaflet.Drivers
 
         #region Constructor
 
-        public MapDisplay(IContentManager contentManager, IMediaFileStore mediaFileStore)
+        public MapDisplay(IContentDefinitionManager contentDefinitionManager, IContentManager contentManager, IMediaFileStore mediaFileStore)
         {
+            _contentDefinitionManager = contentDefinitionManager;
             _contentManager = contentManager;
             _mediaFileStore = mediaFileStore;
         }
@@ -43,6 +49,7 @@ namespace Etch.OrchardCore.Leaflet.Drivers
                 model.ContentItem = part.ContentItem;
                 model.Height = tiles.As<MapTiles>().Height;
                 model.InitialZoom = part.InitialZoom;
+                model.Markers = GetMarkers(part.ContentItem);
                 model.MaxZoom = part.MaxZoom;
                 model.MinZoom = part.MinZoom;
                 model.Width = tiles.As<MapTiles>().Width;
@@ -56,6 +63,20 @@ namespace Etch.OrchardCore.Leaflet.Drivers
         #endregion
 
         #region HelperMethods
+
+        private IEnumerable<PoiMarker> GetMarkers(ContentItem contentItem)
+        {
+            var part = contentItem.As<MapPoisPart>();
+
+            if (part == null)
+            {
+                return new List<PoiMarker>();
+            }
+
+            return part.ContentItems
+                .Where(x => x.As<PoiPart>() != null)
+                .Select(x => x.As<PoiPart>().GetMarker(_contentDefinitionManager));
+        }
 
         private string GetTileRoot(ContentItem contentItem)
         {

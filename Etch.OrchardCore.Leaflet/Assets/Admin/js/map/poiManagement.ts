@@ -16,6 +16,14 @@ const poiManagement = (map: L.Map, options: IInitialiseOptions): void => {
     }
 
     const $modal = document.querySelector('#modalPoiMarkers');
+    
+    const collapseAllEditors = () => {
+        const $editors = document.querySelectorAll('.widget-editor');
+
+        for (let i = 0; i < $editors.length; i++) {
+            ($editors[i] as HTMLButtonElement).classList.add('collapsed');
+        }
+    };
 
     const handleDeletePoi = (e: MouseEvent) => {
         const contentItemId = (e.currentTarget as HTMLButtonElement).getAttribute('data-content-item-id');
@@ -45,6 +53,19 @@ const poiManagement = (map: L.Map, options: IInitialiseOptions): void => {
 
         (document.getElementsByName(`${movedPoi.$editor.id}.PoiPart.Latitude`)[0] as HTMLInputElement).value = e.target._latlng.lat.toString();
         (document.getElementsByName(`${movedPoi.$editor.id}.PoiPart.Longitude`)[0] as HTMLInputElement).value = e.target._latlng.lng.toString();
+    };
+
+    const handleSelectPoi = (e: L.LeafletEvent) => {
+        const movedPoi = activePois.find(item => item.marker === e.target);
+
+        if (!movedPoi || !movedPoi.$editor) {
+            return;
+        }
+
+        collapseAllEditors();
+
+        movedPoi.$editor.querySelector('.widget-editor')?.classList.remove('collapsed');
+        movedPoi.$editor.scrollIntoView();
     };
 
     map.on('click', (e: L.LeafletMouseEvent) => {
@@ -149,6 +170,7 @@ const poiManagement = (map: L.Map, options: IInitialiseOptions): void => {
         for (const item of activePois) {
             item.$editor = document.querySelector(`div[data-content-item-id="${item.contentItemId}"]`) as HTMLElement;
             item.marker.addEventListener('drag', handleMovePoi);
+            item.marker.addEventListener('click', handleSelectPoi);
         }
     }
 

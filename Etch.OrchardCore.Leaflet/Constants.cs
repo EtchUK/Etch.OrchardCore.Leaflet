@@ -1,6 +1,6 @@
 ﻿namespace Etch.OrchardCore.Leaflet
 {
-    public class Constants
+    public static class Constants
     {
         public const int DefaultInitialZoom = 11;
         public const int DefaultMaxZoom = 14;

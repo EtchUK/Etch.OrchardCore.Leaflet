@@ -15,12 +15,6 @@ const poiManagement = (map: L.Map, options: IInitialiseOptions): void => {
         return;
     }
 
-    let activeMarkers: IMapMarker[];
-
-    if (options.pois) {
-        activeMarkers = addPois(map, JSON.parse(options.pois));
-    }
-
     const $modal = document.querySelector('#modalPoiMarkers');
 
     const handleDeletePoi = (e: MouseEvent) => {
@@ -33,20 +27,25 @@ const poiManagement = (map: L.Map, options: IInitialiseOptions): void => {
         // slight delay needed to allow for dialog to be rendered
         window.setTimeout(() => {
             document.querySelector('#confirmRemoveModal .btn-danger')?.addEventListener('click', () => {
-                const markerToRemove = activeMarkers.find(marker => marker.contentItemId === contentItemId);
+                const poiToRemove = activePois.find(poi => poi.contentItemId === contentItemId);
 
-                if (markerToRemove) {
-                    map.removeLayer(markerToRemove.marker);
+                if (poiToRemove) {
+                    map.removeLayer(poiToRemove.marker);
                 }
             });
         }, CLICK_DELAY);
     };
 
-    const $deletePoiButtons = document.querySelectorAll('.poi-delete');
+    const handleMovePoi = (e: L.LeafletEvent) => {
+        const movedPoi = activePois.find(item => item.marker === e.target);
 
-    for (let i = 0; i < $deletePoiButtons.length; i++) {
-        ($deletePoiButtons[i] as HTMLButtonElement).addEventListener('click', handleDeletePoi);
-    }
+        if (!movedPoi || !movedPoi.$editor) {
+            return;
+        }
+
+        (document.getElementsByName(`${movedPoi.$editor.id}.PoiPart.Latitude`)[0] as HTMLInputElement).value = e.target._latlng.lat.toString();
+        (document.getElementsByName(`${movedPoi.$editor.id}.PoiPart.Longitude`)[0] as HTMLInputElement).value = e.target._latlng.lng.toString();
+    };
 
     map.on('click', (e: L.LeafletMouseEvent) => {
         const $addPoiButtons = document.querySelectorAll('#modalPoiMarkers .add-poi');
@@ -84,13 +83,17 @@ const poiManagement = (map: L.Map, options: IInitialiseOptions): void => {
 
                     const $newPoi: HTMLElement = $placeholder?.children[$placeholder.children.length - 1] as HTMLElement;
 
-                    // add marker to map
-                    activeMarkers.push(addPoi(map, {
+                    const poi = addPoi(map, {
                         contentItemId: $newPoi.getAttribute('data-content-item-id') || '',
                         icon: generateIcon(ev.target as HTMLButtonElement),
                         lat: e.latlng.lat,
                         lng: e.latlng.lng
-                    }));
+                    });
+
+                    poi.$editor = $newPoi;
+
+                    // add marker to map
+                    activePois.push(poi);
 
                     // set lat/lng values on input for PoiPart
                     (document.getElementsByName(`${$newPoi.id}.PoiPart.Latitude`)[0] as HTMLInputElement).value = e.latlng.lat.toString();
@@ -98,6 +101,9 @@ const poiManagement = (map: L.Map, options: IInitialiseOptions): void => {
 
                     // add event listener for deleting poi from bag
                     ($newPoi.querySelector('.poi-delete') as HTMLButtonElement)?.addEventListener('click', handleDeletePoi);
+
+                    // add event listener for when poi is moved
+                    poi.marker.addEventListener('drag', handleMovePoi);
 
                     // remove click on map message now user has added poi
                     ($placeholder?.parentElement?.querySelector('.poi-empty') as Element).classList.add('d-none')
@@ -134,6 +140,23 @@ const poiManagement = (map: L.Map, options: IInitialiseOptions): void => {
             new Modal($modal).show();
         }
     });
+
+    let activePois: IMapMarker[];
+
+    if (options.pois) {
+        activePois = addPois(map, JSON.parse(options.pois));
+
+        for (const item of activePois) {
+            item.$editor = document.querySelector(`div[data-content-item-id="${item.contentItemId}"]`) as HTMLElement;
+            item.marker.addEventListener('drag', handleMovePoi);
+        }
+    }
+
+    const $deletePoiButtons = document.querySelectorAll('.poi-delete');
+
+    for (let i = 0; i < $deletePoiButtons.length; i++) {
+        ($deletePoiButtons[i] as HTMLButtonElement).addEventListener('click', handleDeletePoi);
+    }
 };
 
 export default poiManagement;

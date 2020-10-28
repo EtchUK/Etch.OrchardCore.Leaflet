@@ -121,9 +121,6 @@ const poiManagement = (map: L.Map, options: IInitialiseOptions): void => {
 
                     // add event listener for when poi is moved
                     poi.marker.addEventListener('drag', handleMovePoi);
-
-                    // remove click on map message now user has added poi
-                    ($placeholder?.parentElement?.querySelector('.poi-empty') as Element).classList.add('d-none')
                 });
 
             if ($modal) {

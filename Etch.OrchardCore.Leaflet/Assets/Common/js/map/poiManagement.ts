@@ -126,8 +126,9 @@ const poiManagement = (map: L.Map, options: IInitialiseOptions): void => {
                     // add event listener for deleting poi from bag
                     ($newPoi.querySelector('.poi-delete') as HTMLButtonElement)?.addEventListener('click', handleDeletePoi);
 
-                    // add event listener for when poi is moved
+                    // add event listener for interaction with poi
                     poi.marker.addEventListener('drag', handleMovePoi);
+                    poi.marker.addEventListener('click', handleSelectPoi);
                 });
 
             if ($modal) {

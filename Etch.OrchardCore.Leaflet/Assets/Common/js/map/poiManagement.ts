@@ -58,10 +58,14 @@ const poiManagement = (map: L.Map, options: IInitialiseOptions): void => {
             return;
         }
 
+        showPoiEditor(movedPoi.$editor);
+    };
+    
+    const showPoiEditor = ($editor: HTMLElement): void => {
         collapseAllEditors();
 
-        movedPoi.$editor.querySelector('.widget-editor')?.classList.remove('collapsed');
-        movedPoi.$editor.scrollIntoView();
+        $editor.querySelector('.widget-editor')?.classList.remove('collapsed');
+        $editor.scrollIntoView();
     };
 
     map.on('click', (e: L.LeafletMouseEvent) => {
@@ -115,6 +119,9 @@ const poiManagement = (map: L.Map, options: IInitialiseOptions): void => {
                     // set lat/lng values on input for PoiPart
                     (document.getElementsByName(`${$newPoi.id}.PoiPart.Latitude`)[0] as HTMLInputElement).value = e.latlng.lat.toString();
                     (document.getElementsByName(`${$newPoi.id}.PoiPart.Longitude`)[0] as HTMLInputElement).value = e.latlng.lng.toString();
+
+                    // show editor for poi
+                    showPoiEditor(poi.$editor);
 
                     // add event listener for deleting poi from bag
                     ($newPoi.querySelector('.poi-delete') as HTMLButtonElement)?.addEventListener('click', handleDeletePoi);

@@ -11,10 +11,6 @@ import IMapMarker from '../../../Common/js/models/mapMarker';
 const CLICK_DELAY = 10;
 
 const poiManagement = (map: L.Map, options: IInitialiseOptions): void => {
-    if (!options.isManagePOIs) {
-        return;
-    }
-
     const $modal = document.querySelector('#modalPoiMarkers');
     
     const collapseAllEditors = () => {

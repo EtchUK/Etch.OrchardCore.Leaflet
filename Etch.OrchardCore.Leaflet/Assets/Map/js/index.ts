@@ -4,6 +4,7 @@ import * as L from 'leaflet';
 
 import initialize from '../../Common/js/initialize';
 import IInitializeOptions from '../../Common/js/models/initializeOptions';
+import displayPois from '../../Common/js/map/displayPois';
 
 declare global
  {
@@ -13,4 +14,8 @@ declare global
     }
 }
 
-window.initializeMap = initialize
+window.initializeMap = (options: IInitializeOptions) => {
+    const map = initialize(options);
+
+    displayPois(map, options);
+};

@@ -2,9 +2,6 @@ import * as L from 'leaflet';
 import 'leaflet-deepzoom';
 import 'leaflet-css';
 
-import invalidateOnTabClick from './map/invalidateOnTabClick';
-import poiManagement from './map/poiManagement';
-import displayPois from './map/displayPois';
 import IInitializeOptions from './models/initializeOptions';
 
 const initialize = (options: IInitializeOptions): L.Map => {
@@ -32,10 +29,6 @@ const initialize = (options: IInitializeOptions): L.Map => {
     }
     
     map.setZoom(options.initialZoom || 11);
-
-    displayPois(map, options);
-    invalidateOnTabClick(map, options);
-    poiManagement(map, options);
 
     return map;
 };

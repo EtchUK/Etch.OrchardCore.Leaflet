@@ -5,7 +5,7 @@ import addPois from './addPois';
 const POPUP_MAX_WIDTH = 640;
 
 const displayPois = (map: L.Map, options: IInitialiseOptions): void => {
-    if (!options.pois || options.isManagePOIs) {
+    if (!options.pois) {
         return;
     }
 

@@ -28,7 +28,7 @@
 
 @if (!Model.HasTiles)
 {
-    <p class="alert alert-warning">Unable to add POIs until map tiles has been chosen.</p>
+    <p class="alert alert-warning">@T["Unable to add POIs until map tiles has been chosen."]</p>
 }
 
 @if (Model.HasTiles)
@@ -44,9 +44,9 @@
     </div>
 
     <div class="form-group">
-        <h3>POIs</h3>
+        <h3>@T["POIs"]</h3>
 
-        <p class="hint">Click on map to add new POI.</p>
+        <p class="hint">@T["Click on map to add new POI."]</p>
 
         <div id="@poiTemplatePlaceholderId" class="widget-template-placeholder widget-template-placeholder-bagpart bagpart-@partName.HtmlClassify() row mx-0" data-buildeditorurl="@Url.Action("BuildEditor", "Admin", new { area = "Etch.OrchardCore.Leaflet" })">
             @{ var htmlFieldPrefix = this.ViewContext.ViewData.TemplateInfo.HtmlFieldPrefix; }

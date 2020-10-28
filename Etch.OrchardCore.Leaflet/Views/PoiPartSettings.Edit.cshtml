@@ -7,6 +7,12 @@
 </div>
 
 <div class="form-group">
+    <label asp-for="MarkerAdminIcon">@T["Admin Marker Icon"]</label>
+    <input asp-for="MarkerAdminIcon" class="form-control" />
+    <span class="hint">@T["Path to icon to be used as POI marker when defining POIs in admin area. Leave blank to use same as marker icon. "]</span>
+</div>
+
+<div class="form-group">
     <label asp-for="MarkerIconHeight">@T["Marker Icon Height"]</label>
     <input asp-for="MarkerIconHeight" class="form-control" />
     <span class="hint">@T["Height to of POI marker icon."]</span>

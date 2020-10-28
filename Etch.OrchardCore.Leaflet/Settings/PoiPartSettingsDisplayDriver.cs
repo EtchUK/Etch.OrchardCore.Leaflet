@@ -21,6 +21,7 @@ namespace Etch.OrchardCore.Leaflet.Settings
             {
                 var settings = model.GetSettings<PoiPartSettings>();
 
+                viewModel.MarkerAdminIcon = settings.MarkerAdminIcon;
                 viewModel.MarkerIcon = settings.MarkerIcon;
                 viewModel.MarkerIconHeight = settings.MarkerIconHeight;
                 viewModel.MarkerIconWidth = settings.MarkerIconWidth;
@@ -36,10 +37,11 @@ namespace Etch.OrchardCore.Leaflet.Settings
 
             var viewModel = new PoiPartSettingsViewModel();
 
-            await context.Updater.TryUpdateModelAsync(viewModel, Prefix, m => m.MarkerIcon, m => m.MarkerIconHeight, m => m.MarkerIconWidth);
+            await context.Updater.TryUpdateModelAsync(viewModel, Prefix, m => m.MarkerAdminIcon, m => m.MarkerIcon, m => m.MarkerIconHeight, m => m.MarkerIconWidth);
 
             context.Builder.WithSettings(new PoiPartSettings
             {
+                MarkerAdminIcon = viewModel.MarkerAdminIcon,
                 MarkerIcon = viewModel.MarkerIcon,
                 MarkerIconHeight = viewModel.MarkerIconHeight,
                 MarkerIconWidth = viewModel.MarkerIconWidth

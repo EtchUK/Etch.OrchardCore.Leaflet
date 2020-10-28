@@ -138,7 +138,7 @@
                                             data-widget-type="@type.Name"
                                             data-dismiss="modal"
                                             href="javascript:;"
-                                            data-icon-marker-path="@(type.Parts.SingleOrDefault(x => x.Name == nameof(PoiPart)).GetSettings<PoiPartSettings>().MarkerIcon)"
+                                            data-icon-marker-path="@(type.Parts.SingleOrDefault(x => x.Name == nameof(PoiPart)).GetSettings<PoiPartSettings>().AdminMarkerIconPath)"
                                             data-icon-marker-height="@(type.Parts.SingleOrDefault(x => x.Name == nameof(PoiPart)).GetSettings<PoiPartSettings>().MarkerIconHeight)"
                                             data-icon-marker-width="@(type.Parts.SingleOrDefault(x => x.Name == nameof(PoiPart)).GetSettings<PoiPartSettings>().MarkerIconWidth)">
                                         @T["Add"]

@@ -7,7 +7,7 @@ namespace Etch.OrchardCore.Leaflet.Extensions
 {
     public static class PoiPartExtensions
     {
-        public static PoiMarker GetMarker(this PoiPart part, IContentDefinitionManager contentDefinitionManager)
+        public static PoiMarker GetMarker(this PoiPart part, IContentDefinitionManager contentDefinitionManager, bool isAdmin = false)
         {
             var poiPartSettings = contentDefinitionManager.GetTypeDefinition(part.ContentItem.ContentType)
                 .Parts
@@ -20,7 +20,7 @@ namespace Etch.OrchardCore.Leaflet.Extensions
                 Icon = new PoiIcon
                 {
                     Height = poiPartSettings.MarkerIconHeight,
-                    Path = poiPartSettings.MarkerIcon,
+                    Path = isAdmin ? poiPartSettings.AdminMarkerIconPath : poiPartSettings.MarkerIcon,
                     Width = poiPartSettings.MarkerIconWidth
                 },
                 Latitude = part.Latitude,

@@ -51,7 +51,7 @@ namespace Etch.OrchardCore.Leaflet.Drivers
             {
                 model.ContentItem = part.ContentItem;
                 model.MapPoisPart = part;
-                model.Markers = part.ContentItems.Where(x => x.As<PoiPart>() != null).Select(x => x.As<PoiPart>().GetMarker(_contentDefinitionManager));
+                model.Markers = part.ContentItems.Where(x => x.As<PoiPart>() != null).Select(x => x.As<PoiPart>().GetMarker(_contentDefinitionManager, true));
                 model.Updater = context.Updater;
 
                 if (tiles != null)

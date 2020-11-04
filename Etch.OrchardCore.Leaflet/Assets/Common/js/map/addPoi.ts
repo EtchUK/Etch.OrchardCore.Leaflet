@@ -13,6 +13,7 @@ const addPoi = (map: L.Map, poi: IPoi): IMapMarker => {
 
     return {
         contentItemId: poi.contentItemId,
+        icon: poi.icon,
         marker: L.marker([poi.lat, poi.lng], { draggable: true, icon }).addTo(map),
         title: poi.title
     };

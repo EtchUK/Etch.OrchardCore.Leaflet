@@ -20,6 +20,7 @@ namespace Etch.OrchardCore.Leaflet.Extensions
                 Icon = new PoiIcon
                 {
                     Height = poiPartSettings.MarkerIconHeight,
+                    HoverPath = poiPartSettings.MarkerHoverIcon,
                     Path = isAdmin ? poiPartSettings.AdminMarkerIconPath : poiPartSettings.MarkerIcon,
                     Width = poiPartSettings.MarkerIconWidth
                 },

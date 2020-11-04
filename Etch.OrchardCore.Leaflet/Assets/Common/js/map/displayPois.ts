@@ -24,6 +24,36 @@ const displayPois = (map: L.Map, options: IInitialiseOptions): void => {
             });
     };
 
+    const mouseOutPoi = (e: L.LeafletEvent) => {
+        const poi = pois.find(poi => poi.marker === e.target);
+
+        if (!poi || !poi.icon?.hoverPath) {
+            return;
+        }
+
+        poi.marker.setIcon(L.icon({
+            iconUrl: poi.icon.path,
+
+            iconAnchor: [poi.icon.width / 2, poi.icon.height / 2],
+            iconSize: [poi.icon.width, poi.icon.height],
+        }));
+    };
+
+    const mouseOverPoi = (e: L.LeafletEvent) => {
+        const poi = pois.find(poi => poi.marker === e.target);
+
+        if (!poi || !poi.icon?.hoverPath) {
+            return;
+        }
+
+        poi.marker.setIcon(L.icon({
+            iconUrl: poi.icon.hoverPath,
+
+            iconAnchor: [poi.icon.width / 2, poi.icon.height / 2],
+            iconSize: [poi.icon.width, poi.icon.height],
+        }));
+    };
+
     const selectPoi = (e: L.LeafletEvent) => {
         const selectedPoi = pois.find(poi => poi.marker === e.target);
 
@@ -50,6 +80,11 @@ const displayPois = (map: L.Map, options: IInitialiseOptions): void => {
 
     for (const poi of pois) {
         poi.marker.addEventListener('click', selectPoi);
+
+        if (poi.icon?.hoverPath) {
+            poi.marker.addEventListener('mouseover', mouseOverPoi);
+            poi.marker.addEventListener('mouseout', mouseOutPoi);
+        }
     }
 };
 

@@ -6,5 +6,5 @@ export default interface IMapMarker {
     $editor?: HTMLElement,
     icon?: IIcon,
     marker: L.Marker
-    title: string
+    title?: string
 }

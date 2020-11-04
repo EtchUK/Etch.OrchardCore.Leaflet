@@ -1,6 +1,6 @@
 export default interface IIcon {
     height: number;
-    hoverPath: string;
+    hoverPath?: string;
     path: string;
     width: number;
 }

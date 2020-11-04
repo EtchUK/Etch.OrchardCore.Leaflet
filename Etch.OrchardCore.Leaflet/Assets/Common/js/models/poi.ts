@@ -5,5 +5,5 @@ export default interface IPoi {
     icon: IIcon
     lat: number,
     lng: number,
-    title: string,
+    title?: string,
 }

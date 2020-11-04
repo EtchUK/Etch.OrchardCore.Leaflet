@@ -200,7 +200,7 @@ eval("__webpack_require__.r(__webpack_exports__);\n/* harmony import */ var boot
 /*! no static exports found */
 /***/ (function(module, exports) {
 
-eval("/**\r\n * Fixes issue where grid lines will display.\r\n * https://github.com/Leaflet/Leaflet/issues/3575#issuecomment-150544739\r\n */\n(function () {\n  var originalInitTile = L.GridLayer.prototype._initTile;\n  L.GridLayer.include({\n    _initTile: function (tile) {\n      originalInitTile.call(this, tile);\n      var tileSize = this.getTileSize();\n      tile.style.width = tileSize.x + 1 + 'px';\n      tile.style.height = tileSize.y + 1 + 'px';\n    }\n  });\n})();\n\n//# sourceURL=webpack:///./Assets/Common/js/removeGridLines.js?");
+eval("/**\r\n * Fixes issue where grid lines will display.\r\n * https://github.com/Leaflet/Leaflet/issues/3575#issuecomment-150544739\r\n */\n(function () {\n  var originalInitTile = L.GridLayer.prototype._initTile;\n  L.GridLayer.include({\n    _initTile: function (tile) {\n      originalInitTile.call(this, tile);\n      var tileSize = this.getTileSize();\n      tile.style.width = tileSize.x + 1.5 + 'px';\n      tile.style.height = tileSize.y + 1.5 + 'px';\n    }\n  });\n})();\n\n//# sourceURL=webpack:///./Assets/Common/js/removeGridLines.js?");
 
 /***/ }),
 

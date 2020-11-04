@@ -170,5 +170,21 @@ namespace Etch.OrchardCore.Leaflet
 
             return 5;
         }
+
+        public int UpdateFrom5()
+        {
+            _contentDefinitionManager.AlterPartDefinition(nameof(MapPoisPart), builder => builder
+                .WithField(Constants.PoiSelectEventCategoryFieldName, field => field
+                    .OfType(nameof(TextField))
+                    .WithDisplayName("POI Select Event Category")
+                )
+                .WithField(Constants.PoiSelectEventActionFieldName, field => field
+                    .OfType(nameof(TextField))
+                    .WithDisplayName("POI Select Event Action")
+                )
+            );
+
+            return 6;
+        }
     }
 }

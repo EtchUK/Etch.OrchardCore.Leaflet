@@ -1,4 +1,5 @@
 export default interface IInitialiseOptions {
+    analytics: string,
     contentItemId: string,
     domId: string;
     height: number;

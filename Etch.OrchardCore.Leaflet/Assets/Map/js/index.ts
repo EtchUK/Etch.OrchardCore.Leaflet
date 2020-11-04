@@ -9,6 +9,7 @@ import displayPois from '../../Common/js/map/displayPois';
 declare global
  {
     interface Window {
+        ga: GoogleAnalytics,
         initializeMap: (options: IInitializeOptions) => void;
         map: L.Map | undefined;
     }

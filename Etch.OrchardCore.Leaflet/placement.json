@@ -61,6 +61,31 @@
       ]
     }
   ],
+  "TextField": [
+    {
+      "contentType": [
+        "Map"
+      ],
+      "displayType": "Detail",
+      "place": "-"
+    }
+  ],
+  "TextField_Edit": [
+    {
+      "place": "Parts#Analytics:1",
+      "differentiator": "MapPoisPart-PoiSelectEventCategory",
+      "contentType": [
+        "Map"
+      ]
+    },
+    {
+      "place": "Parts#Analytics:1",
+      "differentiator": "MapPoisPart-PoiSelectEventAction",
+      "contentType": [
+        "Map"
+      ]
+    }
+  ],
   "TitlePart_Edit": [
     {
       "place": "Content:1"

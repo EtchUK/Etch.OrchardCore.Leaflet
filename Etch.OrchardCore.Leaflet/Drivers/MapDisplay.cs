@@ -44,6 +44,7 @@ namespace Etch.OrchardCore.Leaflet.Drivers
 
             return Initialize<MapViewModel>("Map", model =>
             {
+                model.Analytics = GetAnalytics(part.ContentItem);
                 model.ContentItem = part.ContentItem;
                 model.Height = tiles.As<MapTiles>().Height;
                 model.InitialZoom = part.InitialZoom;
@@ -61,6 +62,22 @@ namespace Etch.OrchardCore.Leaflet.Drivers
         #endregion
 
         #region HelperMethods
+
+        private MapAnalyticsViewModel GetAnalytics(ContentItem contentItem)
+        {
+            var part = contentItem.As<MapPoisPart>();
+
+            if (part == null)
+            {
+                return null;
+            }
+
+            return new MapAnalyticsViewModel
+            {
+                PoiSelectEventAction = part.Get<TextField>(Constants.PoiSelectEventActionFieldName)?.Text,
+                PoiSelectEventCategory = part.Get<TextField>(Constants.PoiSelectEventCategoryFieldName)?.Text,
+            };
+        }
 
         private IEnumerable<PoiMarker> GetMarkers(ContentItem contentItem)
         {

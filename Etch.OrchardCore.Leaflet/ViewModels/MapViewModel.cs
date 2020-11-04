@@ -6,6 +6,7 @@ namespace Etch.OrchardCore.Leaflet.ViewModels
 {
     public class MapViewModel
     {
+        public MapAnalyticsViewModel Analytics { get; set; }
         public ContentItem ContentItem { get; set; }
         public int Height { get; set; }
         public decimal InitialZoom { get; set; }

@@ -24,7 +24,8 @@ namespace Etch.OrchardCore.Leaflet.Extensions
                     Width = poiPartSettings.MarkerIconWidth
                 },
                 Latitude = part.Latitude,
-                Longitude = part.Longitude
+                Longitude = part.Longitude,
+                Title = part.ContentItem.DisplayText
             };
         }
     }

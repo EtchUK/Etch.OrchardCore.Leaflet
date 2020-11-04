@@ -13,6 +13,9 @@
         public const string MapMaxZoomFieldName = "MaxZoom";
         public const string MapMinZoomFieldName = "MinZoom";
 
+        public const string PoiSelectEventCategoryFieldName = "PoiSelectEventCategory";
+        public const string PoiSelectEventActionFieldName = "PoiSelectEventAction";
+
         public const string TilesContentType = "MapTiles";
         public const string TilesContentTypeDisplayName = "Map Tiles";
         public const string TilesMediaFileFieldName = "MapImage";

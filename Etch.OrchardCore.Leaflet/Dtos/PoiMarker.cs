@@ -12,5 +12,6 @@ namespace Etch.OrchardCore.Leaflet.Dtos
 
         [JsonProperty("lng")]
         public double Longitude { get; set; }
+        public string Title { get; set; }
     }
 }

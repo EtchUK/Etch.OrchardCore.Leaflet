@@ -25,32 +25,32 @@ const displayPois = (map: L.Map, options: IInitialiseOptions): void => {
     };
 
     const mouseOutPoi = (e: L.LeafletEvent) => {
-        const poi = pois.find(poi => poi.marker === e.target);
+        const selectedPoi = pois.find(poi => poi.marker === e.target);
 
-        if (!poi || !poi.icon?.hoverPath) {
+        if (!selectedPoi || !selectedPoi.icon?.hoverPath) {
             return;
         }
 
-        poi.marker.setIcon(L.icon({
-            iconUrl: poi.icon.path,
+        selectedPoi.marker.setIcon(L.icon({
+            iconUrl: selectedPoi.icon.path,
 
-            iconAnchor: [poi.icon.width / 2, poi.icon.height / 2],
-            iconSize: [poi.icon.width, poi.icon.height],
+            iconAnchor: [selectedPoi.icon.width / 2, selectedPoi.icon.height / 2],
+            iconSize: [selectedPoi.icon.width, selectedPoi.icon.height],
         }));
     };
 
     const mouseOverPoi = (e: L.LeafletEvent) => {
-        const poi = pois.find(poi => poi.marker === e.target);
+        const selectedPoi = pois.find(poi => poi.marker === e.target);
 
-        if (!poi || !poi.icon?.hoverPath) {
+        if (!selectedPoi || !selectedPoi.icon?.hoverPath) {
             return;
         }
 
-        poi.marker.setIcon(L.icon({
-            iconUrl: poi.icon.hoverPath,
+        selectedPoi.marker.setIcon(L.icon({
+            iconUrl: selectedPoi.icon.hoverPath,
 
-            iconAnchor: [poi.icon.width / 2, poi.icon.height / 2],
-            iconSize: [poi.icon.width, poi.icon.height],
+            iconAnchor: [selectedPoi.icon.width / 2, selectedPoi.icon.height / 2],
+            iconSize: [selectedPoi.icon.width, selectedPoi.icon.height],
         }));
     };
 

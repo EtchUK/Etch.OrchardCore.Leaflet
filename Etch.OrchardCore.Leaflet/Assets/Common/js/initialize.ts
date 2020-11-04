@@ -1,6 +1,7 @@
 import * as L from 'leaflet';
 import 'leaflet-deepzoom';
 import 'leaflet-css';
+import './removeGridLines';
 
 import IInitializeOptions from './models/initializeOptions';
 

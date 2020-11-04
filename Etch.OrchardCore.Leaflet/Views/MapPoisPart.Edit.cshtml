@@ -23,7 +23,7 @@
     });
 }
 
-<script asp-src="~/Etch.OrchardCore.Leaflet/Scripts/admin.js" asp-name="leafletmapadmin" depends-on="jquery" at="Foot"></script>
+<script asp-src="~/Etch.OrchardCore.Leaflet/Scripts/admin.js" depends-on="jquery" at="Foot" asp-append-version="true"></script>
 <script asp-name="jQuery-ui" at="Foot"></script>
 
 @if (!Model.HasTiles)
@@ -33,7 +33,7 @@
 
 @if (Model.HasTiles)
 {
-    <style asp-src="~/Etch.OrchardCore.Leaflet/Styles/admin.css" at="Head"></style>
+    <style asp-src="~/Etch.OrchardCore.Leaflet/Styles/admin.css" at="Head" asp-append-version="true"></style>
 
     <script at="Foot">
         window.initializeMap({ domId: 'map', height: @Model.Height, pois: '@Html.Raw(pois)', tileRoot: '@Model.TileRoot', width: @Model.Width });

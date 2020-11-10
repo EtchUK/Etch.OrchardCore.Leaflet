@@ -6,5 +6,6 @@
         public string HoverPath { get; set; }
         public string Path { get; set; }
         public int Width { get; set; }
+        public double ZoomRatio { get; set; }
     }
 }

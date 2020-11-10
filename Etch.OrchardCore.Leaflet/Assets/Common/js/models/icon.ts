@@ -3,4 +3,5 @@ export default interface IIcon {
     hoverPath?: string;
     path: string;
     width: number;
+    zoomRatio: number;
 }

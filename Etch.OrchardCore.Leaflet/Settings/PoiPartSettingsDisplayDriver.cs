@@ -26,6 +26,7 @@ namespace Etch.OrchardCore.Leaflet.Settings
                 viewModel.MarkerIcon = settings.MarkerIcon;
                 viewModel.MarkerIconHeight = settings.MarkerIconHeight;
                 viewModel.MarkerIconWidth = settings.MarkerIconWidth;
+                viewModel.MarkerIconZoomRatio = settings.MarkerIconZoomRatio;
             }).Location("Content");
         }
 
@@ -38,7 +39,14 @@ namespace Etch.OrchardCore.Leaflet.Settings
 
             var viewModel = new PoiPartSettingsViewModel();
 
-            await context.Updater.TryUpdateModelAsync(viewModel, Prefix, m => m.MarkerAdminIcon, m => m.MarkerHoverIcon, m => m.MarkerIcon, m => m.MarkerIconHeight, m => m.MarkerIconWidth);
+            await context.Updater.TryUpdateModelAsync(viewModel, Prefix, 
+                m => m.MarkerAdminIcon, 
+                m => m.MarkerHoverIcon, 
+                m => m.MarkerIcon, 
+                m => m.MarkerIconHeight, 
+                m => m.MarkerIconWidth,
+                m => m.MarkerIconZoomRatio
+            );
 
             context.Builder.WithSettings(new PoiPartSettings
             {
@@ -46,7 +54,8 @@ namespace Etch.OrchardCore.Leaflet.Settings
                 MarkerHoverIcon = viewModel.MarkerHoverIcon,
                 MarkerIcon = viewModel.MarkerIcon,
                 MarkerIconHeight = viewModel.MarkerIconHeight,
-                MarkerIconWidth = viewModel.MarkerIconWidth
+                MarkerIconWidth = viewModel.MarkerIconWidth,
+                MarkerIconZoomRatio = viewModel.MarkerIconZoomRatio
             });
 
             return Edit(model, context.Updater);

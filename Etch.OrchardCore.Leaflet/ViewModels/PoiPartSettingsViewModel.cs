@@ -7,5 +7,6 @@
         public string MarkerIcon { get; set; }
         public int MarkerIconHeight { get; set; }
         public int MarkerIconWidth { get; set; }
+        public double MarkerIconZoomRatio { get; set; }
     }
 }

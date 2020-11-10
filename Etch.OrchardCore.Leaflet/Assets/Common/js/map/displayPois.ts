@@ -1,61 +1,93 @@
 import * as L from 'leaflet';
 import IAnalytics from '../models/analytics';
+import IIcon from '../models/icon';
 import IInitialiseOptions from '../models/initializeOptions';
 import IMapMarker from '../models/mapMarker';
 import addPois from './addPois';
 
 const POPUP_MAX_WIDTH = 640;
 
+interface IIconDimensions {
+    height: number;
+    width: number;
+}
+
 const displayPois = (map: L.Map, options: IInitialiseOptions): void => {
     if (!options.pois) {
         return;
     }
 
-    const analytics: IAnalytics | null = options.analytics ? JSON.parse(options.analytics) : null;
+    const analytics: IAnalytics | null = options.analytics
+        ? JSON.parse(options.analytics)
+        : null;
     const pois = addPois(map, JSON.parse(options.pois));
 
     const fetchPoiContent = (poi: IMapMarker) => {
-        window.fetch(`${options.poiDisplayUrl}?contentItemId=${options.contentItemId}&poiContentItemId=${poi.contentItemId}`)
-            .then(response => response.json())
-            .then(data => {
-                poi.marker.bindPopup(data.Content, {
-                    maxWidth: POPUP_MAX_WIDTH
-                }).openPopup();
+        window
+            .fetch(
+                `${options.poiDisplayUrl}?contentItemId=${options.contentItemId}&poiContentItemId=${poi.contentItemId}`
+            )
+            .then((response) => response.json())
+            .then((data) => {
+                poi.marker
+                    .bindPopup(data.Content, {
+                        maxWidth: POPUP_MAX_WIDTH,
+                    })
+                    .openPopup();
             });
     };
 
+    const getIconDimensions = (icon: IIcon): IIconDimensions => {
+        const heightStep = icon.height * icon.zoomRatio - icon.height;
+        const widthStep = icon.width * icon.zoomRatio - icon.width;
+        const levelDifference = Math.abs(map.getZoom() - options.minZoom);
+
+        return {
+            height: icon.height + heightStep * levelDifference,
+            width: icon.width + widthStep * levelDifference,
+        };
+    };
+
     const mouseOutPoi = (e: L.LeafletEvent) => {
-        const selectedPoi = pois.find(poi => poi.marker === e.target);
+        const selectedPoi = pois.find((poi) => poi.marker === e.target);
 
         if (!selectedPoi || !selectedPoi.icon?.hoverPath) {
             return;
         }
 
-        selectedPoi.marker.setIcon(L.icon({
-            iconUrl: selectedPoi.icon.path,
+        const dimensions = getIconDimensions(selectedPoi.icon);
 
-            iconAnchor: [selectedPoi.icon.width / 2, selectedPoi.icon.height / 2],
-            iconSize: [selectedPoi.icon.width, selectedPoi.icon.height],
-        }));
+        selectedPoi.marker.setIcon(
+            L.icon({
+                iconUrl: selectedPoi.icon.path,
+
+                iconAnchor: [dimensions.width / 2, dimensions.height / 2],
+                iconSize: [dimensions.width, dimensions.height],
+            })
+        );
     };
 
     const mouseOverPoi = (e: L.LeafletEvent) => {
-        const selectedPoi = pois.find(poi => poi.marker === e.target);
+        const selectedPoi = pois.find((poi) => poi.marker === e.target);
 
         if (!selectedPoi || !selectedPoi.icon?.hoverPath) {
             return;
         }
 
-        selectedPoi.marker.setIcon(L.icon({
-            iconUrl: selectedPoi.icon.hoverPath,
+        const dimensions = getIconDimensions(selectedPoi.icon);
 
-            iconAnchor: [selectedPoi.icon.width / 2, selectedPoi.icon.height / 2],
-            iconSize: [selectedPoi.icon.width, selectedPoi.icon.height],
-        }));
+        selectedPoi.marker.setIcon(
+            L.icon({
+                iconUrl: selectedPoi.icon.hoverPath,
+
+                iconAnchor: [dimensions.width / 2, dimensions.height / 2],
+                iconSize: [dimensions.width, dimensions.height],
+            })
+        );
     };
 
     const selectPoi = (e: L.LeafletEvent) => {
-        const selectedPoi = pois.find(poi => poi.marker === e.target);
+        const selectedPoi = pois.find((poi) => poi.marker === e.target);
 
         if (!selectedPoi) {
             return;
@@ -66,7 +98,11 @@ const displayPois = (map: L.Map, options: IInitialiseOptions): void => {
     };
 
     const trackPoiSelect = (poi: IMapMarker) => {
-        if (!window.ga || !analytics?.poiSelectEventAction || !analytics?.poiSelectEventCategory) {
+        if (
+            !window.ga ||
+            !analytics?.poiSelectEventAction ||
+            !analytics?.poiSelectEventCategory
+        ) {
             return;
         }
 
@@ -74,7 +110,7 @@ const displayPois = (map: L.Map, options: IInitialiseOptions): void => {
             hitType: 'event',
             eventCategory: analytics.poiSelectEventCategory,
             eventAction: analytics.poiSelectEventAction,
-            eventLabel: poi.title
+            eventLabel: poi.title,
         });
     };
 
@@ -86,6 +122,25 @@ const displayPois = (map: L.Map, options: IInitialiseOptions): void => {
             poi.marker.addEventListener('mouseout', mouseOutPoi);
         }
     }
+
+    map.on('zoomend', function () {
+        for (const poi of pois) {
+            if (!poi.icon) {
+                continue;
+            }
+
+            const dimensions = getIconDimensions(poi.icon);
+
+            poi.marker.setIcon(
+                L.icon({
+                    iconUrl: poi.icon.path,
+
+                    iconAnchor: [dimensions.width / 2, dimensions.height / 2],
+                    iconSize: [dimensions.width, dimensions.height],
+                })
+            );
+        }
+    });
 };
 
 export default displayPois;

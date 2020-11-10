@@ -98,7 +98,6 @@ namespace Etch.OrchardCore.Leaflet.Services
             }
 
             var tempFile = File.Create(Path.Combine(path, Path.GetFileName(mapImagePath)));
-            fileStream.Seek(0, SeekOrigin.Begin);
             fileStream.CopyTo(tempFile);
             tempFile.Close();
 

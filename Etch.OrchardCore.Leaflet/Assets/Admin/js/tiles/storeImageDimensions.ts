@@ -1,4 +1,11 @@
 const storeImageDimensions = (e: Event): void => {
+    const $heightInput = (document.querySelector('#MapTiles_Height') as HTMLInputElement);
+    const $widthInput = (document.querySelector('#MapTiles_Width') as HTMLInputElement);
+
+    if (!$heightInput || !$widthInput) {
+        return;
+    }
+
     e.preventDefault();
 
     const draftBtn = document.querySelector('button[value="submit.Publish"]') as HTMLButtonElement;
@@ -11,8 +18,13 @@ const storeImageDimensions = (e: Event): void => {
     const img = new Image();
 
     img.onload = () => {
-        (document.querySelector('#MapTiles_Height') as HTMLInputElement).value = img.height.toString();
-        (document.querySelector('#MapTiles_Width') as HTMLInputElement).value = img.width.toString();
+        if ($heightInput) {
+            $heightInput.value = img.height.toString();
+        }
+
+        if ($widthInput) {
+            $widthInput.value = img.width.toString();
+        }
 
         draftBtn.disabled = false;
         submitBtn.disabled = false;

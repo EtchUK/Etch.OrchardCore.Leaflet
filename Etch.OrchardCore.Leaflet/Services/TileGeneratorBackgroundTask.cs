@@ -58,14 +58,17 @@ namespace Etch.OrchardCore.Leaflet.Services
                 return;
             }
 
-            _logger.LogDebug($"Generating tiles for {itemToProcess.DisplayText}");
+            _logger.LogInformation($"Generating tiles for {itemToProcess.DisplayText}");
 
             await UpdateToProcessingAsync(serviceProvider, itemToProcess);
+
+            _logger.LogInformation($"Updated content item to processing");
 
             var mediaField = itemToProcess.As<MapTiles>().Get<MediaField>(Constants.TilesMediaFileFieldName);
 
             if (mediaField == null || !mediaField.Paths.Any())
             {
+                _logger.LogInformation($"Unable to find map tile media");
                 return;
             }
 
@@ -88,6 +91,8 @@ namespace Etch.OrchardCore.Leaflet.Services
 
         private async Task<string> CopyFileToCacheFolder(IServiceProvider serviceProvider, ContentItem contentItem, string mapImagePath)
         {
+            _logger.LogInformation($"Copying file from media library to local file system");
+
             var mediaStore = serviceProvider.GetRequiredService<IMediaFileStore>();
             var path = PathExtensions.Combine(CacheDirectory, contentItem.ContentItemId);
             var fileStream = await mediaStore.GetFileStreamAsync(mapImagePath);
@@ -106,11 +111,18 @@ namespace Etch.OrchardCore.Leaflet.Services
 
         private void DeleteCache(string cachePath)
         {
-            Directory.Delete(Path.GetDirectoryName(cachePath), true);
+            _logger.LogInformation($"Deleting files from local file system");
+
+            if (Directory.Exists(Path.GetDirectoryName(cachePath)))
+            {
+                Directory.Delete(Path.GetDirectoryName(cachePath), true);
+            }
         }
 
         private void GenerateTiles(string path)
         {
+            _logger.LogInformation($"Generating tiles with external process");
+
             using (var process = new Process())
             {
                 process.StartInfo.FileName = $"{Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "TileGenerator", "Etch.OrchardCore.LeafletTileGenerator.exe")}";
@@ -142,6 +154,8 @@ namespace Etch.OrchardCore.Leaflet.Services
 
         private async Task MoveFilesToMediaStoreAsync(IServiceProvider serviceProvider, ContentItem contentItem, string cachePath, string mediaStorePath)
         {
+            _logger.LogInformation($"Moving files from local file system to media store");
+
             var mediaStore = serviceProvider.GetRequiredService<IMediaFileStore>();
             var cachedTilesPath = Path.GetDirectoryName(cachePath) + "_files";
             var zoomLevels = Directory.EnumerateDirectories(cachedTilesPath).Count();
@@ -152,6 +166,8 @@ namespace Etch.OrchardCore.Leaflet.Services
                 if (!Directory.Exists(Path.Combine(cachedTilesPath, currentZoomLevel.ToString()))) {
                     break;
                 }
+
+                _logger.LogInformation($"Moving files at zoom level {currentZoomLevel}");
 
                 foreach (var tile in Directory.GetFiles(Path.Combine(cachedTilesPath, currentZoomLevel.ToString()))) {
                     await mediaStore.CreateFileFromStreamAsync(Path.Combine(Path.GetDirectoryName(mediaStorePath), contentItem.ContentItemId, currentZoomLevel.ToString(), Path.GetFileName(tile)), File.OpenRead(tile), true);
@@ -164,6 +180,8 @@ namespace Etch.OrchardCore.Leaflet.Services
         private async Task UpdateToProcessedAsync(IServiceProvider serviceProvider, ContentItem contentItem)
         {
             var contentManager = serviceProvider.GetRequiredService<IContentManager>();
+
+            _logger.LogInformation($"Update content item to reflect tiles have been generated");
 
             var mapTiles = contentItem.As<MapTiles>();
             mapTiles.HasBeenProcessed = true;

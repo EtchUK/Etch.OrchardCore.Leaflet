@@ -16,6 +16,9 @@
     var poiTemplatePlaceholderId = Html.Id("poiTemplatePlaceholderId");
     var poiContentTypes = ContentDefinitionManager.ListTypeDefinitions().Where(t => t.GetSettings<ContentTypeSettings>().Stereotype == "POI");
     var parentContentType = Model.ContentItem.ContentType;
+    var map = Model.ContentItem.As<Map>();
+
+
     string partName = ((dynamic)Model).Metadata.Name;
     string pois = JsonConvert.SerializeObject(Model.Markers, new JsonSerializerSettings
     {
@@ -36,7 +39,7 @@
     <style asp-src="~/Etch.OrchardCore.Leaflet/Styles/admin.css" at="Head" asp-append-version="true"></style>
 
     <script at="Foot">
-        window.initializeMap({ domId: 'map', height: @Model.Height, pois: '@Html.Raw(pois)', tileRoot: '@Model.TileRoot', width: @Model.Width });
+        window.initializeMap({ domId: 'map', height: @Model.Height, initialZoom: @map.InitialZoom, maxZoom: @map.MaxZoom, minZoom: @map.MinZoom, pois: '@Html.Raw(pois)', tileRoot: '@Model.TileRoot', width: @Model.Width });
     </script>
 
     <div class="leaflet leaflet--admin">
@@ -140,7 +143,8 @@
                                             href="javascript:;"
                                             data-icon-marker-path="@(type.Parts.SingleOrDefault(x => x.Name == nameof(PoiPart)).GetSettings<PoiPartSettings>().AdminMarkerIconPath)"
                                             data-icon-marker-height="@(type.Parts.SingleOrDefault(x => x.Name == nameof(PoiPart)).GetSettings<PoiPartSettings>().MarkerIconHeight)"
-                                            data-icon-marker-width="@(type.Parts.SingleOrDefault(x => x.Name == nameof(PoiPart)).GetSettings<PoiPartSettings>().MarkerIconWidth)">
+                                            data-icon-marker-width="@(type.Parts.SingleOrDefault(x => x.Name == nameof(PoiPart)).GetSettings<PoiPartSettings>().MarkerIconWidth)"
+                                            data-icon-marker-zoom-ratio="@(type.Parts.SingleOrDefault(x => x.Name == nameof(PoiPart)).GetSettings<PoiPartSettings>().MarkerIconZoomRatio)">
                                         @T["Add"]
                                     </button>
                                 </div>

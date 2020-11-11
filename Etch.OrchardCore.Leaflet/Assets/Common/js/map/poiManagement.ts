@@ -7,6 +7,7 @@ import addPois from '../../../Common/js/map/addPois';
 import IIcon from '../../../Common/js/models/icon';
 import IInitialiseOptions from '../../../Common/js/models/initializeOptions';
 import IMapMarker from '../../../Common/js/models/mapMarker';
+import getIconDimensions from './getIconDimensions';
 
 const CLICK_DELAY = 10;
 
@@ -148,7 +149,7 @@ const poiManagement = (map: L.Map, options: IInitialiseOptions): void => {
                         $placeholder.children.length - 1
                     ] as HTMLElement;
 
-                    const poi = addPoi(map, {
+                    const poi = addPoi(map, options, {
                         contentItemId:
                             $newPoi.getAttribute('data-content-item-id') || '',
                         icon: generateIcon(ev.target as HTMLButtonElement),
@@ -214,7 +215,9 @@ const poiManagement = (map: L.Map, options: IInitialiseOptions): void => {
                         '0',
                     10
                 ),
-                zoomRatio: 1,
+                zoomRatio: parseFloat(
+                    $btn.getAttribute('data-icon-marker-zoom-ratio') || '1'
+                ),
             };
         };
 
@@ -235,7 +238,7 @@ const poiManagement = (map: L.Map, options: IInitialiseOptions): void => {
     let activePois: IMapMarker[];
 
     if (options.pois) {
-        activePois = addPois(map, JSON.parse(options.pois));
+        activePois = addPois(map, options, JSON.parse(options.pois));
 
         for (const item of activePois) {
             item.$editor = document.querySelector(
@@ -254,6 +257,25 @@ const poiManagement = (map: L.Map, options: IInitialiseOptions): void => {
             handleDeletePoi
         );
     }
+
+    map.on('zoomend', function () {
+        for (const poi of activePois) {
+            if (!poi.icon) {
+                continue;
+            }
+
+            const dimensions = getIconDimensions(map, options, poi.icon);
+
+            poi.marker.setIcon(
+                L.icon({
+                    iconUrl: poi.icon.path,
+
+                    iconAnchor: [dimensions.width / 2, dimensions.height / 2],
+                    iconSize: [dimensions.width, dimensions.height],
+                })
+            );
+        }
+    });
 };
 
 export default poiManagement;

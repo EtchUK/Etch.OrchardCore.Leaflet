@@ -1,16 +1,13 @@
 import * as L from 'leaflet';
+
 import IAnalytics from '../models/analytics';
-import IIcon from '../models/icon';
 import IInitialiseOptions from '../models/initializeOptions';
 import IMapMarker from '../models/mapMarker';
+
 import addPois from './addPois';
+import getIconDimensions from './getIconDimensions';
 
 const POPUP_MAX_WIDTH = 640;
-
-interface IIconDimensions {
-    height: number;
-    width: number;
-}
 
 const displayPois = (map: L.Map, options: IInitialiseOptions): void => {
     if (!options.pois) {
@@ -20,7 +17,7 @@ const displayPois = (map: L.Map, options: IInitialiseOptions): void => {
     const analytics: IAnalytics | null = options.analytics
         ? JSON.parse(options.analytics)
         : null;
-    const pois = addPois(map, JSON.parse(options.pois));
+    const pois = addPois(map, options, JSON.parse(options.pois));
 
     const fetchPoiContent = (poi: IMapMarker) => {
         window
@@ -37,17 +34,6 @@ const displayPois = (map: L.Map, options: IInitialiseOptions): void => {
             });
     };
 
-    const getIconDimensions = (icon: IIcon): IIconDimensions => {
-        const heightStep = icon.height * icon.zoomRatio - icon.height;
-        const widthStep = icon.width * icon.zoomRatio - icon.width;
-        const levelDifference = Math.abs(map.getZoom() - options.minZoom);
-
-        return {
-            height: icon.height + heightStep * levelDifference,
-            width: icon.width + widthStep * levelDifference,
-        };
-    };
-
     const mouseOutPoi = (e: L.LeafletEvent) => {
         const selectedPoi = pois.find((poi) => poi.marker === e.target);
 
@@ -55,7 +41,7 @@ const displayPois = (map: L.Map, options: IInitialiseOptions): void => {
             return;
         }
 
-        const dimensions = getIconDimensions(selectedPoi.icon);
+        const dimensions = getIconDimensions(map, options, selectedPoi.icon);
 
         selectedPoi.marker.setIcon(
             L.icon({
@@ -74,7 +60,7 @@ const displayPois = (map: L.Map, options: IInitialiseOptions): void => {
             return;
         }
 
-        const dimensions = getIconDimensions(selectedPoi.icon);
+        const dimensions = getIconDimensions(map, options, selectedPoi.icon);
 
         selectedPoi.marker.setIcon(
             L.icon({
@@ -129,7 +115,7 @@ const displayPois = (map: L.Map, options: IInitialiseOptions): void => {
                 continue;
             }
 
-            const dimensions = getIconDimensions(poi.icon);
+            const dimensions = getIconDimensions(map, options, poi.icon);
 
             poi.marker.setIcon(
                 L.icon({

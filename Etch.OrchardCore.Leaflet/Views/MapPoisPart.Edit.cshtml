@@ -1,6 +1,7 @@
 ﻿@using Etch.OrchardCore.Leaflet.Models;
+@using Etch.OrchardCore.Leaflet.Utils;
 @using Newtonsoft.Json;
-@using Newtonsoft.Json.Serialization; 
+@using Newtonsoft.Json.Serialization;
 @using OrchardCore.ContentManagement.Display;
 @using OrchardCore.ContentManagement.Metadata;
 @using OrchardCore.ContentManagement.Metadata.Settings;
@@ -20,10 +21,6 @@
 
 
     string partName = ((dynamic)Model).Metadata.Name;
-    string pois = JsonConvert.SerializeObject(Model.Markers, new JsonSerializerSettings
-    {
-        ContractResolver = new CamelCasePropertyNamesContractResolver()
-    });
 }
 
 <script asp-src="~/Etch.OrchardCore.Leaflet/Scripts/admin.js" depends-on="jquery" at="Foot" asp-append-version="true"></script>
@@ -39,7 +36,7 @@
     <style asp-src="~/Etch.OrchardCore.Leaflet/Styles/admin.css" at="Head" asp-append-version="true"></style>
 
     <script at="Foot">
-        window.initializeMap({ domId: 'map', height: @Model.Height, initialZoom: @map.InitialZoom, maxZoom: @map.MaxZoom, minZoom: @map.MinZoom, pois: '@Html.Raw(pois)', tileRoot: '@Model.TileRoot', width: @Model.Width });
+        window.initializeMap({ domId: 'map', height: @Model.Height, initialZoom: @map.InitialZoom, maxZoom: @map.MaxZoom, minZoom: @map.MinZoom, pois: '@Html.Raw(PoiUtils.Serialize(Model.Markers))', tileRoot: '@Model.TileRoot', width: @Model.Width });
     </script>
 
     <div class="leaflet leaflet--admin">

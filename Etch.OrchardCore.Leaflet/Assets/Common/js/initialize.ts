@@ -26,9 +26,9 @@ const initialize = (options: IInitializeOptions): L.Map => {
 
     if (dzLayer.options.bounds instanceof L.LatLngBounds) {
         map.fitBounds(dzLayer.options.bounds);
-        map.setMaxBounds(dzLayer.options.bounds);
+        //map.setMaxBounds(dzLayer.options.bounds);
     }
-    
+
     map.setZoom(options.initialZoom || 11);
 
     return map;

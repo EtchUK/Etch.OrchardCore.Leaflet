@@ -22,9 +22,10 @@ const addPoi = (
     return {
         contentItemId: poi.contentItemId,
         icon: poi.icon,
-        marker: L.marker([poi.lat, poi.lng], { draggable: true, icon }).addTo(
-            map
-        ),
+        marker: L.marker([poi.lat, poi.lng], {
+            draggable: options.draggableMarkers,
+            icon,
+        }).addTo(map),
         title: poi.title,
     };
 };

@@ -36,7 +36,7 @@
     <style asp-src="~/Etch.OrchardCore.Leaflet/Styles/admin.css" at="Head" asp-append-version="true"></style>
 
     <script at="Foot">
-        window.initializeMap({ domId: 'map', height: @Model.Height, initialZoom: @map.InitialZoom, maxZoom: @map.MaxZoom, minZoom: @map.MinZoom, pois: '@Html.Raw(PoiUtils.Serialize(Model.Markers))', tileRoot: '@Model.TileRoot', width: @Model.Width });
+        window.initializeMap({ domId: 'map', draggableMarkers: true, height: @Model.Height, initialZoom: @map.InitialZoom, maxZoom: @map.MaxZoom, minZoom: @map.MinZoom, pois: '@Html.Raw(PoiUtils.Serialize(Model.Markers))', tileRoot: '@Model.TileRoot', width: @Model.Width });
     </script>
 
     <div class="leaflet leaflet--admin">

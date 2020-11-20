@@ -1,6 +1,7 @@
 export default interface IInitialiseOptions {
-    analytics: string,
-    contentItemId: string,
+    analytics: string;
+    contentItemId: string;
+    draggableMarkers: boolean;
     domId: string;
     height: number;
     initialZoom: number;

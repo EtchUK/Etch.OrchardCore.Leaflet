@@ -20,3 +20,8 @@
 .leaflet--admin {
     margin-bottom: 3rem;
 }
+
+.leaflet-popup-tip-container {
+    top: -20px;
+    transform: rotate(180deg);
+}

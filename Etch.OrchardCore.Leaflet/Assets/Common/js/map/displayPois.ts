@@ -9,6 +9,14 @@ import getIconDimensions from './getIconDimensions';
 
 const POPUP_MAX_WIDTH = 640;
 
+interface ILeafletPopup {
+    _container: HTMLElement;
+}
+
+interface ILeafetMarker {
+    _popup: ILeafletPopup;
+}
+
 const displayPois = (map: L.Map, options: IInitialiseOptions): void => {
     if (!options.pois) {
         return;
@@ -20,17 +28,63 @@ const displayPois = (map: L.Map, options: IInitialiseOptions): void => {
     const pois = addPois(map, options, JSON.parse(options.pois));
 
     const fetchPoiContent = (poi: IMapMarker) => {
+        if (!poi || !poi.icon) {
+            return;
+        }
+
+        const dimensions = getIconDimensions(map, options, poi.icon);
+
         window
             .fetch(
                 `${options.poiDisplayUrl}?contentItemId=${options.contentItemId}&poiContentItemId=${poi.contentItemId}`
             )
             .then((response) => response.json())
             .then((data) => {
-                poi.marker
+                const popup: L.Marker = poi.marker
+                    .setIcon(
+                        L.icon({
+                            iconUrl: poi.icon?.path ?? '',
+
+                            iconAnchor: [
+                                dimensions.width / 2,
+                                dimensions.height / 2,
+                            ],
+                            iconSize: [dimensions.width, dimensions.height],
+
+                            popupAnchor: [0, 300],
+                        })
+                    )
                     .bindPopup(data.Content, {
                         maxWidth: POPUP_MAX_WIDTH,
                     })
                     .openPopup();
+
+                const $activePoi = ((popup as unknown) as ILeafetMarker)._popup
+                    ._container;
+
+                const ro = new window.ResizeObserver(() => {
+                    if (!$activePoi || !poi || !poi.icon) {
+                        return;
+                    }
+
+                    poi.marker.setIcon(
+                        L.icon({
+                            iconUrl: poi.icon.path,
+
+                            iconAnchor: [
+                                dimensions.width / 2,
+                                dimensions.height / 2,
+                            ],
+                            iconSize: [dimensions.width, dimensions.height],
+
+                            popupAnchor: [0, $activePoi.offsetHeight + 40],
+                        })
+                    );
+
+                    poi.marker.bindPopup(data.Content);
+                });
+
+                ro.observe($activePoi);
             });
     };
 
@@ -49,6 +103,8 @@ const displayPois = (map: L.Map, options: IInitialiseOptions): void => {
 
                 iconAnchor: [dimensions.width / 2, dimensions.height / 2],
                 iconSize: [dimensions.width, dimensions.height],
+
+                popupAnchor: [0, 300],
             })
         );
     };
@@ -68,6 +124,8 @@ const displayPois = (map: L.Map, options: IInitialiseOptions): void => {
 
                 iconAnchor: [dimensions.width / 2, dimensions.height / 2],
                 iconSize: [dimensions.width, dimensions.height],
+
+                popupAnchor: [0, 300],
             })
         );
     };
@@ -123,6 +181,8 @@ const displayPois = (map: L.Map, options: IInitialiseOptions): void => {
 
                     iconAnchor: [dimensions.width / 2, dimensions.height / 2],
                     iconSize: [dimensions.width, dimensions.height],
+
+                    popupAnchor: [0, 300],
                 })
             );
         }

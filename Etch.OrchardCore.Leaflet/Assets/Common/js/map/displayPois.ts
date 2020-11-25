@@ -143,19 +143,28 @@ const displayPois = (map: L.Map, options: IInitialiseOptions): void => {
 
     const trackPoiSelect = (poi: IMapMarker) => {
         if (
-            !window.ga ||
+            (!window.gtag && !window.ga) ||
             !analytics?.poiSelectEventAction ||
             !analytics?.poiSelectEventCategory
         ) {
             return;
         }
 
-        window.ga('send', {
-            hitType: 'event',
-            eventCategory: analytics.poiSelectEventCategory,
-            eventAction: analytics.poiSelectEventAction,
-            eventLabel: poi.title,
-        });
+        if (window.gtag) {
+            window.gtag('event', analytics.poiSelectEventAction, {
+                event_category: analytics.poiSelectEventAction,
+                event_label: poi.title,
+            });
+        }
+
+        if (window.ga) {
+            window.ga('send', {
+                hitType: 'event',
+                eventCategory: analytics.poiSelectEventCategory,
+                eventAction: analytics.poiSelectEventAction,
+                eventLabel: poi.title,
+            });
+        }
     };
 
     for (const poi of pois) {

@@ -6,10 +6,10 @@ import initialize from '../../Common/js/initialize';
 import IInitializeOptions from '../../Common/js/models/initializeOptions';
 import displayPois from '../../Common/js/map/displayPois';
 
-declare global
- {
+declare global {
     interface Window {
-        ga: GoogleAnalytics,
+        ga: GoogleAnalytics;
+        gtag: Gtag.Gtag;
         initializeMap: (options: IInitializeOptions) => void;
         map: L.Map | undefined;
     }

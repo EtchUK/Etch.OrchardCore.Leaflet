@@ -6,6 +6,6 @@ using OrchardCore.Modules.Manifest;
     Dependencies = new string[] { "OrchardCore.BackgroundTasks", "OrchardCore.Media", "OrchardCore.Title" },
     Description = "Create interactive maps utilising Leaflet.",
     Name = "Leaflet Maps",
-    Version = "0.5.4",
+    Version = "1.1.0",
     Website = "https://etchuk.com"
 )]

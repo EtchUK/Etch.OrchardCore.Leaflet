@@ -8,6 +8,8 @@ using OrchardCore.ContentManagement.Metadata.Settings;
 using OrchardCore.Data.Migration;
 using OrchardCore.Media.Fields;
 using OrchardCore.Media.Settings;
+using YesSql;
+using YesSql.Sql;
 
 namespace Etch.OrchardCore.Leaflet
 {
@@ -49,7 +51,7 @@ namespace Etch.OrchardCore.Leaflet
                 .WithPart(Constants.TilesContentType)
                 .DisplayedAs(Constants.TilesContentTypeDisplayName));
 
-            SchemaBuilder.CreateMapIndexTable(nameof(MapTilesIndex), table => table
+            SchemaBuilder.CreateMapIndexTable<MapTilesIndex>(table => table
                 .Column<bool>(nameof(MapTilesIndex.HasBeenProcessed))
             );
 

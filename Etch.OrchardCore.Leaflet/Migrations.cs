@@ -188,5 +188,15 @@ namespace Etch.OrchardCore.Leaflet
 
             return 6;
         }
+
+        public int UpdateFrom6()
+        {
+            _contentDefinitionManager.AlterPartDefinition(nameof(MapTilesManualPart), builder => builder
+                .WithDescription("Allow users to specify the directory where map tiles are located.")
+                .WithDisplayName("Map Tiles Manual")
+                .Attachable());
+
+            return 7;
+        }
     }
 }

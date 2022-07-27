@@ -10,9 +10,14 @@ namespace Etch.OrchardCore.Leaflet.Extensions
     {
         public static string GetTileRoot(this MapTiles part)
         {
+            if (part.ContentItem.Has<MapTilesManualPart>())
+            {
+                return part.ContentItem.As<MapTilesManualPart>().TilesRoot;
+            }
+
             var mediaField = part.Get<MediaField>(Constants.TilesMediaFileFieldName);
 
-            if (mediaField == null || !mediaField.Paths.Any())
+            if (mediaField == null || mediaField.Paths == null || !mediaField.Paths.Any())
             {
                 return null;
             }

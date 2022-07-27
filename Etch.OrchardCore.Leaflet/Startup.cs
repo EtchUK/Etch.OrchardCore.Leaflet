@@ -14,8 +14,11 @@ using OrchardCore.ContentManagement;
 using OrchardCore.ContentManagement.Display.ContentDisplay;
 using OrchardCore.ContentTypes.Editors;
 using OrchardCore.Data.Migration;
+using OrchardCore.DisplayManagement.Handlers;
 using OrchardCore.Modules;
 using OrchardCore.Mvc.Core.Utilities;
+using OrchardCore.Navigation;
+using OrchardCore.Settings;
 using System;
 using YesSql.Indexes;
 
@@ -43,6 +46,9 @@ namespace Etch.OrchardCore.Leaflet
 
             services.AddContentPart<PoiPart>()
                 .UseDisplayDriver<PoiPartDisplay>();
+
+            services.AddContentPart<MapTilesManualPart>()
+                .UseDisplayDriver<MapTilesManualPartDisplay>();
 
             services.AddScoped<IContentTypePartDefinitionDisplayDriver, PoiPartSettingsDisplayDriver>();
 

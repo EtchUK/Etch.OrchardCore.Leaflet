@@ -6,9 +6,11 @@ using Microsoft.Extensions.Options;
 using OrchardCore.BackgroundTasks;
 using OrchardCore.ContentManagement;
 using OrchardCore.ContentManagement.Records;
+using OrchardCore.Entities;
 using OrchardCore.Environment.Shell;
 using OrchardCore.Media;
 using OrchardCore.Media.Fields;
+using OrchardCore.Settings;
 using System;
 using System.Diagnostics;
 using System.IO;
@@ -38,7 +40,10 @@ namespace Etch.OrchardCore.Leaflet.Services
 
         #region Constructor
 
-        public TileGeneratorBackgroundTask(ILogger<TileGeneratorBackgroundTask> logger, IOptions<ShellOptions> shellOptions, ShellSettings shellSettings)
+        public TileGeneratorBackgroundTask(
+            ILogger<TileGeneratorBackgroundTask> logger, 
+            IOptions<ShellOptions> shellOptions,
+            ShellSettings shellSettings)
         {
             _logger = logger;
             _shellOptions = shellOptions;

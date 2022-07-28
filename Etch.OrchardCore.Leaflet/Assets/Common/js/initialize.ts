@@ -1,6 +1,5 @@
 import * as L from 'leaflet';
 import 'leaflet-deepzoom';
-import 'leaflet-css';
 import './removeGridLines';
 
 import IInitializeOptions from './models/initializeOptions';
@@ -26,7 +25,7 @@ const initialize = (options: IInitializeOptions): L.Map => {
 
     if (dzLayer.options.bounds instanceof L.LatLngBounds) {
         map.fitBounds(dzLayer.options.bounds);
-        //map.setMaxBounds(dzLayer.options.bounds);
+        // map.setMaxBounds(dzLayer.options.bounds);
     }
 
     map.setZoom(options.initialZoom || 11);

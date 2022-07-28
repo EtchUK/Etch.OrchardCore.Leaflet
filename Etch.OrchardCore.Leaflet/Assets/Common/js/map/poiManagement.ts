@@ -15,17 +15,15 @@ const poiManagement = (map: L.Map, options: IInitialiseOptions): void => {
     const $modal = document.querySelector('#modalPoiMarkers');
 
     const collapseAllEditors = () => {
-        const $editors = document.querySelectorAll('.widget-editor');
-
-        for (let i = 0; i < $editors.length; i++) {
-            ($editors[i] as HTMLButtonElement).classList.add('collapsed');
-        }
+        document.querySelectorAll('.widget-editor').forEach(($editor) => {
+            ($editor as HTMLButtonElement).classList.add('collapsed');
+        });
     };
 
     const handleDeletePoi = (e: MouseEvent) => {
-        const contentItemId = (e.currentTarget as HTMLButtonElement).getAttribute(
-            'data-content-item-id'
-        );
+        const contentItemId = (
+            e.currentTarget as HTMLButtonElement
+        ).getAttribute('data-content-item-id');
 
         if (!contentItemId) {
             return;
@@ -54,12 +52,16 @@ const poiManagement = (map: L.Map, options: IInitialiseOptions): void => {
             return;
         }
 
-        (document.getElementsByName(
-            `${movedPoi.$editor.id}.PoiPart.Latitude`
-        )[0] as HTMLInputElement).value = e.target._latlng.lat.toString();
-        (document.getElementsByName(
-            `${movedPoi.$editor.id}.PoiPart.Longitude`
-        )[0] as HTMLInputElement).value = e.target._latlng.lng.toString();
+        (
+            document.getElementsByName(
+                `${movedPoi.$editor.id}.PoiPart.Latitude`
+            )[0] as HTMLInputElement
+        ).value = e.target._latlng.lat.toString();
+        (
+            document.getElementsByName(
+                `${movedPoi.$editor.id}.PoiPart.Longitude`
+            )[0] as HTMLInputElement
+        ).value = e.target._latlng.lng.toString();
     };
 
     const handleSelectPoi = (e: L.LeafletEvent) => {
@@ -163,23 +165,26 @@ const poiManagement = (map: L.Map, options: IInitialiseOptions): void => {
                     activePois.push(poi);
 
                     // set lat/lng values on input for PoiPart
-                    (document.getElementsByName(
-                        `${$newPoi.id}.PoiPart.Latitude`
-                    )[0] as HTMLInputElement).value = e.latlng.lat.toString();
-                    (document.getElementsByName(
-                        `${$newPoi.id}.PoiPart.Longitude`
-                    )[0] as HTMLInputElement).value = e.latlng.lng.toString();
+                    (
+                        document.getElementsByName(
+                            `${$newPoi.id}.PoiPart.Latitude`
+                        )[0] as HTMLInputElement
+                    ).value = e.latlng.lat.toString();
+                    (
+                        document.getElementsByName(
+                            `${$newPoi.id}.PoiPart.Longitude`
+                        )[0] as HTMLInputElement
+                    ).value = e.latlng.lng.toString();
 
                     // show editor for poi
                     showPoiEditor(poi.$editor);
 
                     // add event listener for deleting poi from bag
-                    ($newPoi.querySelector(
-                        '.poi-delete'
-                    ) as HTMLButtonElement)?.addEventListener(
-                        'click',
-                        handleDeletePoi
-                    );
+                    (
+                        $newPoi.querySelector(
+                            '.poi-delete'
+                        ) as HTMLButtonElement
+                    )?.addEventListener('click', handleDeletePoi);
 
                     // add event listener for interaction with poi
                     poi.marker.addEventListener('drag', handleMovePoi);
@@ -194,12 +199,12 @@ const poiManagement = (map: L.Map, options: IInitialiseOptions): void => {
         };
 
         const dispose = () => {
-            for (let i = 0; i < $addPoiButtons.length; i++) {
-                ($addPoiButtons[i] as HTMLButtonElement).removeEventListener(
+            $addPoiButtons.forEach(($addPoiButton) => {
+                ($addPoiButton as HTMLButtonElement).removeEventListener(
                     'click',
                     handleAddNewPoi
                 );
-            }
+            });
         };
 
         const generateIcon = ($btn: HTMLButtonElement): IIcon => {
@@ -223,12 +228,12 @@ const poiManagement = (map: L.Map, options: IInitialiseOptions): void => {
 
         dispose();
 
-        for (let i = 0; i < $addPoiButtons.length; i++) {
-            ($addPoiButtons[i] as HTMLButtonElement).addEventListener(
+        $addPoiButtons.forEach(($addPoiButton) => {
+            ($addPoiButton as HTMLButtonElement).addEventListener(
                 'click',
                 handleAddNewPoi
             );
-        }
+        });
 
         if ($modal) {
             new Modal($modal).show();
@@ -251,14 +256,14 @@ const poiManagement = (map: L.Map, options: IInitialiseOptions): void => {
 
     const $deletePoiButtons = document.querySelectorAll('.poi-delete');
 
-    for (let i = 0; i < $deletePoiButtons.length; i++) {
-        ($deletePoiButtons[i] as HTMLButtonElement).addEventListener(
+    $deletePoiButtons.forEach(($deletePoiButton) => {
+        ($deletePoiButton as HTMLButtonElement).addEventListener(
             'click',
             handleDeletePoi
         );
-    }
+    });
 
-    map.on('zoomend', function () {
+    map.on('zoomend', () => {
         for (const poi of activePois) {
             if (!poi.icon) {
                 continue;

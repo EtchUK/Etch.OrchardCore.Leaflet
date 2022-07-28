@@ -3,6 +3,8 @@
  * https://github.com/Leaflet/Leaflet/issues/3575#issuecomment-150544739
  */
 
+import * as L from 'leaflet';
+
 (function () {
     var originalInitTile = L.GridLayer.prototype._initTile;
     L.GridLayer.include({

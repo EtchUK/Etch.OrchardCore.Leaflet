@@ -59,7 +59,7 @@ const displayPois = (map: L.Map, options: IInitialiseOptions): void => {
                     })
                     .openPopup();
 
-                const $activePoi = ((popup as unknown) as ILeafetMarker)._popup
+                const $activePoi = (popup as unknown as ILeafetMarker)._popup
                     ._container;
 
                 const ro = new window.ResizeObserver(() => {
@@ -176,7 +176,7 @@ const displayPois = (map: L.Map, options: IInitialiseOptions): void => {
         }
     }
 
-    map.on('zoomend', function () {
+    map.on('zoomend', () => {
         for (const poi of pois) {
             if (!poi.icon) {
                 continue;

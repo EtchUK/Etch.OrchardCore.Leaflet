@@ -3,11 +3,14 @@ import * as L from 'leaflet';
 import IAnalytics from '../models/analytics';
 import IInitialiseOptions from '../models/initializeOptions';
 import IMapMarker from '../models/mapMarker';
+import { getQueryString, updateQueryString } from '../utils/url';
 
 import addPois from './addPois';
 import getIconDimensions from './getIconDimensions';
 
 const POPUP_MAX_WIDTH = 640;
+
+const POPUP_CLOSE_DELAY = 25;
 
 interface ILeafletPopup {
     _container: HTMLElement;
@@ -16,6 +19,20 @@ interface ILeafletPopup {
 interface ILeafetMarker {
     _popup: ILeafletPopup;
 }
+
+interface IDisplayPopupsState {
+    activePopup: L.Marker | null;
+    activePopupMarker: IMapMarker | null;
+}
+
+const queryStringParams = {
+    poi: 'poi',
+};
+
+const state: IDisplayPopupsState = {
+    activePopup: null,
+    activePopupMarker: null,
+};
 
 const displayPois = (map: L.Map, options: IInitialiseOptions): void => {
     if (!options.pois) {
@@ -40,7 +57,7 @@ const displayPois = (map: L.Map, options: IInitialiseOptions): void => {
             )
             .then((response) => response.json())
             .then((data) => {
-                const popup: L.Marker = poi.marker
+                state.activePopup = poi.marker
                     .setIcon(
                         L.icon({
                             iconUrl: poi.icon?.path ?? '',
@@ -55,12 +72,14 @@ const displayPois = (map: L.Map, options: IInitialiseOptions): void => {
                         })
                     )
                     .bindPopup(data.Content, {
+                        autoPan: false,
                         maxWidth: POPUP_MAX_WIDTH,
                     })
                     .openPopup();
 
-                const $activePoi = (popup as unknown as ILeafetMarker)._popup
-                    ._container;
+                const $activePoi = (
+                    state.activePopup as unknown as ILeafetMarker
+                )._popup._container;
 
                 const ro = new window.ResizeObserver(() => {
                     if (!$activePoi || !poi || !poi.icon) {
@@ -85,6 +104,20 @@ const displayPois = (map: L.Map, options: IInitialiseOptions): void => {
                 });
 
                 ro.observe($activePoi);
+
+                state.activePopup.addEventListener('popupclose', (e) => {
+                    state.activePopup = null;
+                    state.activePopupMarker = null;
+
+                    // need to delay to allow the selected POI event
+                    // to fire to cater for the scenario where the popup
+                    // closed because another POI was selected.
+                    window.setTimeout(() => {
+                        if (!state.activePopupMarker) {
+                            updateQueryString(queryStringParams.poi, '');
+                        }
+                    }, POPUP_CLOSE_DELAY);
+                });
             });
     };
 
@@ -130,15 +163,39 @@ const displayPois = (map: L.Map, options: IInitialiseOptions): void => {
         );
     };
 
-    const selectPoi = (e: L.LeafletEvent) => {
+    const onSelectPoi = (e: L.LeafletEvent) => {
         const selectedPoi = pois.find((poi) => poi.marker === e.target);
 
         if (!selectedPoi) {
             return;
         }
 
+        selectPoi(selectedPoi);
+    };
+
+    const removeActivePopup = () => {
+        state.activePopupMarker = null;
+
+        if (!state.activePopup) {
+            return;
+        }
+
+        state.activePopup.remove();
+        state.activePopup = null;
+    };
+
+    const selectPoi = (
+        selectedPoi: IMapMarker,
+        shouldUpdateUrl: boolean = true
+    ) => {
+        state.activePopupMarker = selectedPoi;
+
         fetchPoiContent(selectedPoi);
         trackPoiSelect(selectedPoi);
+
+        if (shouldUpdateUrl) {
+            updateUrl(selectedPoi);
+        }
     };
 
     const trackPoiSelect = (poi: IMapMarker) => {
@@ -167,12 +224,22 @@ const displayPois = (map: L.Map, options: IInitialiseOptions): void => {
         }
     };
 
+    const updateUrl = (poi: IMapMarker) => {
+        updateQueryString(queryStringParams.poi, poi.contentItemId);
+    };
+
+    const initialPoi = getQueryString(queryStringParams.poi);
+
     for (const poi of pois) {
-        poi.marker.addEventListener('click', selectPoi);
+        poi.marker.addEventListener('click', onSelectPoi);
 
         if (poi.icon?.hoverPath) {
             poi.marker.addEventListener('mouseover', mouseOverPoi);
             poi.marker.addEventListener('mouseout', mouseOutPoi);
+        }
+
+        if (initialPoi && poi.contentItemId === initialPoi) {
+            selectPoi(poi);
         }
     }
 
@@ -194,6 +261,22 @@ const displayPois = (map: L.Map, options: IInitialiseOptions): void => {
                     popupAnchor: [0, 300],
                 })
             );
+        }
+    });
+
+    window.addEventListener('popstate', () => {
+        const poiId = getQueryString(queryStringParams.poi);
+
+        if (!poiId) {
+            removeActivePopup();
+            return;
+        }
+
+        for (const poi of pois) {
+            if (poi.contentItemId === poiId) {
+                selectPoi(poi);
+                break;
+            }
         }
     });
 };

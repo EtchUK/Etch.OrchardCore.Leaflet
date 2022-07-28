@@ -1,6 +1,7 @@
 export default interface IInitialiseOptions {
     analytics: string;
     contentItemId: string;
+    deepLinking: boolean;
     draggableMarkers: boolean;
     domId: string;
     height: number;

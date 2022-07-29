@@ -1,37 +1,19 @@
 import * as L from 'leaflet';
 
-import IAnalytics from '../models/analytics';
 import IInitialiseOptions from '../models/initializeOptions';
 import IMapMarker from '../models/mapMarker';
 import { getQueryString, updateQueryString } from '../utils/url';
 
 import addPois from './addPois';
+import { displayPoi, IPoiPopup } from './displayPoi';
 import getIconDimensions from './getIconDimensions';
 
-const POPUP_MAX_WIDTH = 640;
-
-const POPUP_CLOSE_DELAY = 25;
-
-interface ILeafletPopup {
-    _container: HTMLElement;
-}
-
-interface ILeafetMarker {
-    _popup: ILeafletPopup;
-}
-
 interface IDisplayPopupsState {
-    activePopup: L.Marker | null;
-    activePopupMarker: IMapMarker | null;
+    activePopup: IPoiPopup | null;
 }
 
 const queryStringParams = {
     poi: 'poi',
-};
-
-const state: IDisplayPopupsState = {
-    activePopup: null,
-    activePopupMarker: null,
 };
 
 const displayPois = (map: L.Map, options: IInitialiseOptions): void => {
@@ -39,87 +21,9 @@ const displayPois = (map: L.Map, options: IInitialiseOptions): void => {
         return;
     }
 
-    const analytics: IAnalytics | null = options.analytics
-        ? JSON.parse(options.analytics)
-        : null;
+    const state: IDisplayPopupsState = { activePopup: null };
+
     const pois = addPois(map, options, JSON.parse(options.pois));
-
-    const fetchPoiContent = (poi: IMapMarker) => {
-        if (!poi || !poi.icon) {
-            return;
-        }
-
-        const dimensions = getIconDimensions(map, options, poi.icon);
-
-        window
-            .fetch(
-                `${options.poiDisplayUrl}?contentItemId=${options.contentItemId}&poiContentItemId=${poi.contentItemId}`
-            )
-            .then((response) => response.json())
-            .then((data) => {
-                state.activePopup = poi.marker
-                    .setIcon(
-                        L.icon({
-                            iconUrl: poi.icon?.path ?? '',
-
-                            iconAnchor: [
-                                dimensions.width / 2,
-                                dimensions.height / 2,
-                            ],
-                            iconSize: [dimensions.width, dimensions.height],
-
-                            popupAnchor: [0, 300],
-                        })
-                    )
-                    .bindPopup(data.Content, {
-                        autoPan: false,
-                        maxWidth: POPUP_MAX_WIDTH,
-                    })
-                    .openPopup();
-
-                const $activePoi = (
-                    state.activePopup as unknown as ILeafetMarker
-                )._popup._container;
-
-                const ro = new window.ResizeObserver(() => {
-                    if (!$activePoi || !poi || !poi.icon) {
-                        return;
-                    }
-
-                    poi.marker.setIcon(
-                        L.icon({
-                            iconUrl: poi.icon.path,
-
-                            iconAnchor: [
-                                dimensions.width / 2,
-                                dimensions.height / 2,
-                            ],
-                            iconSize: [dimensions.width, dimensions.height],
-
-                            popupAnchor: [0, $activePoi.offsetHeight + 40],
-                        })
-                    );
-
-                    poi.marker.bindPopup(data.Content);
-                });
-
-                ro.observe($activePoi);
-
-                state.activePopup.addEventListener('popupclose', (e) => {
-                    state.activePopup = null;
-                    state.activePopupMarker = null;
-
-                    // need to delay to allow the selected POI event
-                    // to fire to cater for the scenario where the popup
-                    // closed because another POI was selected.
-                    window.setTimeout(() => {
-                        if (!state.activePopupMarker) {
-                            updateQueryString(queryStringParams.poi, '');
-                        }
-                    }, POPUP_CLOSE_DELAY);
-                });
-            });
-    };
 
     const mouseOutPoi = (e: L.LeafletEvent) => {
         const selectedPoi = pois.find((poi) => poi.marker === e.target);
@@ -174,13 +78,7 @@ const displayPois = (map: L.Map, options: IInitialiseOptions): void => {
     };
 
     const removeActivePopup = () => {
-        state.activePopupMarker = null;
-
-        if (!state.activePopup) {
-            return;
-        }
-
-        state.activePopup.remove();
+        state.activePopup?.remove();
         state.activePopup = null;
     };
 
@@ -188,39 +86,10 @@ const displayPois = (map: L.Map, options: IInitialiseOptions): void => {
         selectedPoi: IMapMarker,
         shouldUpdateUrl: boolean = true
     ) => {
-        state.activePopupMarker = selectedPoi;
-
-        fetchPoiContent(selectedPoi);
-        trackPoiSelect(selectedPoi);
+        state.activePopup = displayPoi(selectedPoi, options);
 
         if (shouldUpdateUrl) {
             updateUrl(selectedPoi);
-        }
-    };
-
-    const trackPoiSelect = (poi: IMapMarker) => {
-        if (
-            (!window.gtag && !window.ga) ||
-            !analytics?.poiSelectEventAction ||
-            !analytics?.poiSelectEventCategory
-        ) {
-            return;
-        }
-
-        if (window.gtag) {
-            window.gtag('event', analytics.poiSelectEventAction, {
-                event_category: analytics.poiSelectEventAction,
-                event_label: poi.title,
-            });
-        }
-
-        if (window.ga) {
-            window.ga('send', {
-                hitType: 'event',
-                eventCategory: analytics.poiSelectEventCategory,
-                eventAction: analytics.poiSelectEventAction,
-                eventLabel: poi.title,
-            });
         }
     };
 
@@ -267,14 +136,18 @@ const displayPois = (map: L.Map, options: IInitialiseOptions): void => {
     window.addEventListener('popstate', () => {
         const poiId = getQueryString(queryStringParams.poi);
 
-        if (!poiId) {
+        if (poiId && state.activePopup?.poi.contentItemId !== poiId) {
+            removeActivePopup();
+        }
+
+        if (!poiId && state.activePopup) {
             removeActivePopup();
             return;
         }
 
         for (const poi of pois) {
             if (poi.contentItemId === poiId) {
-                selectPoi(poi);
+                selectPoi(poi, false);
                 break;
             }
         }

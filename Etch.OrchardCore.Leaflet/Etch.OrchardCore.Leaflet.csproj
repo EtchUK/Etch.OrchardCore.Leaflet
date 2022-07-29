@@ -4,7 +4,7 @@
     <TargetFramework>net6.0</TargetFramework>
     <AddRazorSupportForMvc>true</AddRazorSupportForMvc>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
-    <Version>1.3.0</Version>
+    <Version>1.3.1</Version>
     <PackageId>Etch.OrchardCore.Leaflet</PackageId>
     <Title>Leaflet Maps</Title>
     <Authors>Etch UK Ltd.</Authors>
@@ -13,10 +13,10 @@
     <ProjectGuid>DF2FF4F8-B52A-4FA7-9730-6E9FD5823E1B</ProjectGuid>
   </PropertyGroup>
 
-  <ItemGroup> 
-    <Content Include="TileGenerator\**"> 
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory> 
-    </Content> 
+  <ItemGroup>
+    <Content Include="TileGenerator\**">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
   </ItemGroup>
 
   <ItemGroup>

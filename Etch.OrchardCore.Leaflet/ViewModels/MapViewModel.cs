@@ -15,6 +15,7 @@ namespace Etch.OrchardCore.Leaflet.ViewModels
         public decimal MinZoom { get; set; }
         public string TileRoot { get; set; }
         public int Width { get; set; }
+        public string ZoomControlPosition { get; set; }
 
         public double Ratio
         {

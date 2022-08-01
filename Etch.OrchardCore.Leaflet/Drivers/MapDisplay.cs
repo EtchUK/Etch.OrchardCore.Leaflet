@@ -52,6 +52,7 @@ namespace Etch.OrchardCore.Leaflet.Drivers
                 model.MaxZoom = part.MaxZoom;
                 model.MinZoom = part.MinZoom;
                 model.Width = tiles.As<MapTiles>().Width;
+                model.ZoomControlPosition = part.ZoomControlPosition;
 
                 // needs trailing slash otherwise doesn't load tile images
                 model.TileRoot = _mediaFileStore.MapPathToPublicUrl(GetTileRoot(tiles)) + "/";

@@ -198,5 +198,50 @@ namespace Etch.OrchardCore.Leaflet
 
             return 7;
         }
+
+        public int UpdateFrom7()
+        {
+            _contentDefinitionManager.AlterPartDefinition(Constants.MapContentType, part => part
+                .WithField(Constants.MapZoomControlPositionFieldName, field => field
+                    .OfType(nameof(TextField))
+                    .WithDisplayName("Zoom Control Position")
+                    .WithEditor("PredefinedList")
+                    .WithSettings(new TextFieldSettings
+                    {
+                        Hint = "Determine the position of the zoom control."
+                    })
+                    .WithSettings(new TextFieldPredefinedListEditorSettings
+                    {
+                        DefaultValue = Constants.DefaultZoomControlPosition,
+                        Editor = EditorOption.Dropdown,
+                        Options = new[]
+                        {
+                            new ListValueOption
+                            {
+                                Name = "Top Left",
+                                Value = "topleft",
+                            },
+                            new ListValueOption
+                            {
+                                Name = "Top Right",
+                                Value = "topright",
+                            },
+                            new ListValueOption
+                            {
+                                Name = "Bottom Left",
+                                Value = "bottomleft",
+                            },
+                            new ListValueOption
+                            {
+                                Name = "Bottom Right",
+                                Value = "bottomright",
+                            }
+                        },
+                    })
+                )
+            );
+
+            return 8;
+        }
     }
 }

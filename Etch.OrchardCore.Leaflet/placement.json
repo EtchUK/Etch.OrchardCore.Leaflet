@@ -40,21 +40,21 @@
   ],
   "NumericField_Edit": [
     {
-      "place": "Parts#Zoom:1",
+      "place": "Parts#Zoom:2",
       "differentiator": "Map-InitialZoom",
       "contentType": [
         "Map"
       ]
     },
     {
-      "place": "Parts#Zoom:2",
+      "place": "Parts#Zoom:3",
       "differentiator": "Map-MaxZoom",
       "contentType": [
         "Map"
       ]
     },
     {
-      "place": "Parts#Zoom:3",
+      "place": "Parts#Zoom:4",
       "differentiator": "Map-MinZoom",
       "contentType": [
         "Map"
@@ -81,6 +81,13 @@
     {
       "place": "Parts#Analytics:1",
       "differentiator": "MapPoisPart-PoiSelectEventAction",
+      "contentType": [
+        "Map"
+      ]
+    },
+    {
+      "place": "Parts#Zoom:1",
+      "differentiator": "Map-ZoomControlPosition",
       "contentType": [
         "Map"
       ]

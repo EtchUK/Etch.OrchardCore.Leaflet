@@ -12,4 +12,5 @@ export default interface IInitialiseOptions {
     pois: string;
     tileRoot: string;
     width: number;
+    zoomControlPosition: string;
 }

@@ -37,6 +37,8 @@ const initialize = (options: IInitializeOptions): L.Map => {
         zoomControl: true,
     }).setView(new L.LatLng(0, 0), initialZoomLevel);
 
+    (map.zoomControl as any).setPosition(options.zoomControlPosition);
+
     // Workaround for global map referenced in deepzoom init
     // https://github.com/alfarisi/leaflet-deepzoom/issues/8
     window.map = map;

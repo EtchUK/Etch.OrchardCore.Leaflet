@@ -23,5 +23,11 @@ namespace Etch.OrchardCore.Leaflet.Models
         {
             get { return this.Get<NumericField>(Constants.MapMinZoomFieldName)?.Value ?? Constants.DefaultMinZoom; }
         }
+
+        [JsonIgnore]
+        public string ZoomControlPosition
+        {
+            get { return this.Get<TextField>(Constants.MapZoomControlPositionFieldName)?.Text ?? Constants.DefaultZoomControlPosition; }
+        }
     }
 }

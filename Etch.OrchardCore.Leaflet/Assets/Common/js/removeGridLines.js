@@ -6,12 +6,12 @@
 import * as L from 'leaflet';
 
 (function () {
-    var originalInitTile = L.GridLayer.prototype._initTile;
+    const originalInitTile = L.GridLayer.prototype._initTile;
     L.GridLayer.include({
         _initTile: function (tile) {
             originalInitTile.call(this, tile);
 
-            var tileSize = this.getTileSize();
+            const tileSize = this.getTileSize();
 
             tile.style.width = tileSize.x + 1.5 + 'px';
             tile.style.height = tileSize.y + 1.5 + 'px';

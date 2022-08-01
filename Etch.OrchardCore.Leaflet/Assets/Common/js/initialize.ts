@@ -29,6 +29,7 @@ const getInitialZoom = (options: IInitializeOptions): number => {
 
 const initialize = (options: IInitializeOptions): L.Map => {
     const initialZoomLevel = getInitialZoom(options);
+    let hasSetInitialZoom = false;
 
     const map = L.map(options.domId, {
         attributionControl: false,
@@ -59,6 +60,11 @@ const initialize = (options: IInitializeOptions): L.Map => {
 
     if (options.deepLinking) {
         map.on('zoomend', () => {
+            if (!hasSetInitialZoom) {
+                hasSetInitialZoom = true;
+                return;
+            }
+
             updateQueryString(queryStringParams.zoom, map.getZoom().toString());
         });
     }

@@ -27,6 +27,11 @@
 
 .leaflet-popup-close-button {
     position: absolute;
-    right: 1rem;
+    right: 2rem;
     top: 1rem;
+    z-index: 1000;
+}
+
+.is-displaying-poi {
+    overflow: hidden;
 }

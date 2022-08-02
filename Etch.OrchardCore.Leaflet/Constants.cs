@@ -5,6 +5,7 @@
         public const int DefaultInitialZoom = 11;
         public const int DefaultMaxZoom = 14;
         public const int DefaultMinZoom = 8;
+        public const bool DefaultMouseWheelZoom = false;
         public const string DefaultZoomControlPosition = "topleft";
         public const int MaxZoomLevel = 15;
 
@@ -13,6 +14,7 @@
         public const string MapInitialZoomFieldName = "InitialZoom";
         public const string MapMaxZoomFieldName = "MaxZoom";
         public const string MapMinZoomFieldName = "MinZoom";
+        public const string MapMouseWheelZoom = "MouseWheelZoom";
         public const string MapZoomControlPositionFieldName = "ZoomControlPosition";
 
         public const string PoiSelectEventCategoryFieldName = "PoiSelectEventCategory";

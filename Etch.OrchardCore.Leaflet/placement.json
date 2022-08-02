@@ -1,4 +1,22 @@
 {
+  "BooleanField": [
+    {
+      "contentType": [
+        "Map"
+      ],
+      "displayType": "Detail",
+      "place": "-"
+    }
+  ],
+  "BooleanField_Edit": [
+    {
+      "place": "Parts#Zoom:10",
+      "differentiator": "Map-MouseWheelZoom",
+      "contentType": [
+        "Map"
+      ]
+    }
+  ],
   "ContentPickerField": [
     {
       "contentType": [

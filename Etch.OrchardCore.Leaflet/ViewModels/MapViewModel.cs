@@ -13,6 +13,7 @@ namespace Etch.OrchardCore.Leaflet.ViewModels
         public IEnumerable<PoiMarker> Markers { get; set; }
         public decimal MaxZoom { get; set; }
         public decimal MinZoom { get; set; }
+        public bool MouseWheelZoom { get; set; }
         public string TileRoot { get; set; }
         public int Width { get; set; }
         public string ZoomControlPosition { get; set; }

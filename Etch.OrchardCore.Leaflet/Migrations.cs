@@ -243,5 +243,22 @@ namespace Etch.OrchardCore.Leaflet
 
             return 8;
         }
+
+        public int UpdateFrom8()
+        {
+            _contentDefinitionManager.AlterPartDefinition(Constants.MapContentType, part => part
+                .WithField(Constants.MapMouseWheelZoom, field => field
+                    .OfType(nameof(BooleanField))
+                    .WithDisplayName("Mouse Wheel Scroll")
+                    .WithSettings(new BooleanFieldSettings
+                    {
+                        Hint = "Allow users to use the mouse wheel to zoom in & out of map.",
+                        Label = "Enable Mouse Wheel Zoom"
+                    })
+                )
+            );
+
+            return 9;
+        }
     }
 }

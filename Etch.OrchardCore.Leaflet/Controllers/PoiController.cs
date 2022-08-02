@@ -25,6 +25,7 @@ namespace Etch.OrchardCore.Leaflet.Controllers
             _updateModelAccessor = updateModelAccessor;
         }
 
+        [ResponseCache(Duration = 300, Location = ResponseCacheLocation.Any)]
         public async Task<IActionResult> BuildDisplay(string contentItemId, string poiContentItemId)
         {
             if (string.IsNullOrWhiteSpace(contentItemId) || string.IsNullOrWhiteSpace(poiContentItemId))

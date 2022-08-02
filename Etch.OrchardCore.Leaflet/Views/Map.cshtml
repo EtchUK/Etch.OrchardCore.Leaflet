@@ -15,7 +15,23 @@
 <script asp-src="~/Etch.OrchardCore.Leaflet/Scripts/map.js" at="Foot" depends-on="jquery" asp-append-version="true"></script>
 
 <script at="Foot">
-    window.initializeMap({ analytics: '@Html.Raw(analytics)', contentItemId: '@Model.ContentItem.ContentItemId', deepLinking: true, domId: 'map', draggableMarkers: false, height: @Model.Height, initialZoom: @Model.InitialZoom, maxZoom: @Model.MaxZoom, minZoom: @Model.MinZoom, poiDisplayUrl: '@Url.Action("BuildDisplay", "Poi", new { area = "Etch.OrchardCore.Leaflet" })', pois: '@Html.Raw(PoiUtils.Serialize(Model.Markers))', tileRoot: '@Model.TileRoot', width: @Model.Width, zoomControlPosition: '@Model.ZoomControlPosition' });
+    window.initializeMap({ 
+        analytics: '@Html.Raw(analytics)', 
+        contentItemId: '@Model.ContentItem.ContentItemId', 
+        deepLinking: true, 
+        domId: 'map', 
+        draggableMarkers: false, 
+        height: @Model.Height, 
+        initialZoom: @Model.InitialZoom, 
+        maxZoom: @Model.MaxZoom, 
+        minZoom: @Model.MinZoom, 
+        mouseWheelZoom: @Model.MouseWheelZoom.ToString().ToLower(), 
+        poiDisplayUrl: '@Url.Action("BuildDisplay", "Poi", new { area = "Etch.OrchardCore.Leaflet" })', 
+        pois: '@Html.Raw(PoiUtils.Serialize(Model.Markers))', 
+        tileRoot: '@Model.TileRoot', 
+        width: @Model.Width, 
+        zoomControlPosition: '@Model.ZoomControlPosition' 
+    });
 </script>
 
 <div class="leaflet" style="padding-bottom: @Model.Ratio.ToString("#.000")%;">

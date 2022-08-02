@@ -8,6 +8,7 @@ export default interface IInitialiseOptions {
     initialZoom: number;
     maxZoom: number;
     minZoom: number;
+    mouseWheelZoom: boolean;
     poiDisplayUrl: string;
     pois: string;
     tileRoot: string;

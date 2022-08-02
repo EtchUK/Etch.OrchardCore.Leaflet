@@ -25,6 +25,12 @@ namespace Etch.OrchardCore.Leaflet.Models
         }
 
         [JsonIgnore]
+        public bool MouseWheelZoom
+        {
+            get { return this.Get<BooleanField>(Constants.MapMouseWheelZoom)?.Value ?? Constants.DefaultMouseWheelZoom; }
+        }
+
+        [JsonIgnore]
         public string ZoomControlPosition
         {
             get { return this.Get<TextField>(Constants.MapZoomControlPositionFieldName)?.Text ?? Constants.DefaultZoomControlPosition; }

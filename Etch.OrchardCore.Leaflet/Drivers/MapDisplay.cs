@@ -51,6 +51,7 @@ namespace Etch.OrchardCore.Leaflet.Drivers
                 model.Markers = GetMarkers(part.ContentItem);
                 model.MaxZoom = part.MaxZoom;
                 model.MinZoom = part.MinZoom;
+                model.MouseWheelZoom = part.MouseWheelZoom;
                 model.Width = tiles.As<MapTiles>().Width;
                 model.ZoomControlPosition = part.ZoomControlPosition;
 

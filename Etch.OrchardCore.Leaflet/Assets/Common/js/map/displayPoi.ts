@@ -32,8 +32,11 @@ export const displayPoi = (
         const $el = document.createElement('div');
         $el.classList.add('leaflet-popup-modal');
 
-        $el.innerHTML = `<div class="leaflet-popup-modal-content js-leaflet-popup-modal-content">
-                <button type="button" class="leaflet-popup-close-button">×</button></div>`;
+        $el.innerHTML = `<div class="leaflet-popup-modal-wrapper">
+    <button type="button" class="leaflet-popup-close-button"><span>×</span></button>
+    <div class="leaflet-popup-modal-wrapper-background"></div>
+    <div class="leaflet-popup-modal-content js-leaflet-popup-modal-content"></div>
+</div>`;
 
         return $el;
     };
@@ -55,11 +58,9 @@ export const displayPoi = (
                     );
                 }
 
-                const $html = document.querySelector('html');
-
-                if ($html) {
-                    $html.style.overflow = 'hidden';
-                }
+                document
+                    .querySelector('html')
+                    ?.classList.add('is-displaying-poi');
 
                 document.querySelector('body')?.appendChild($modal);
 
@@ -79,6 +80,8 @@ export const displayPoi = (
         if (shouldUpdateUrl) {
             updateQueryString('poi', '');
         }
+
+        document.querySelector('html')?.classList.remove('is-displaying-poi');
 
         document.removeEventListener('click', checkClickOutside);
         document.removeEventListener('keyup', checkForEscape);

@@ -1,9 +1,11 @@
-import IIcon from "./icon";
+import IIcon from './icon';
 
 export default interface IPoi {
-    contentItemId: string,
-    icon: IIcon
-    lat: number,
-    lng: number,
-    title?: string,
+    alwaysDisplay: boolean;
+    contentItemId: string;
+    icon: IIcon;
+    lat: number;
+    lng: number;
+    title?: string;
+    zoomLevels: number[];
 }

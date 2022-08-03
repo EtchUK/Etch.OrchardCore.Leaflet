@@ -1,5 +1,6 @@
 ﻿using Etch.OrchardCore.Leaflet.Dtos;
 using Etch.OrchardCore.Leaflet.Models;
+using OrchardCore.ContentManagement;
 using OrchardCore.ContentManagement.Metadata;
 using System.Linq;
 
@@ -16,6 +17,7 @@ namespace Etch.OrchardCore.Leaflet.Extensions
 
             return new PoiMarker
             {
+                AlwaysDisplay = part.ContentItem.As<PoiPart>().AlwaysDisplay,
                 ContentItemId = part.ContentItem.ContentItemId,
                 Icon = new PoiIcon
                 {
@@ -27,7 +29,8 @@ namespace Etch.OrchardCore.Leaflet.Extensions
                 },
                 Latitude = part.Latitude,
                 Longitude = part.Longitude,
-                Title = part.ContentItem.DisplayText
+                Title = part.ContentItem.DisplayText,
+                ZoomLevels = part.ContentItem.As<PoiPart>().ZoomLevels
             };
         }
     }

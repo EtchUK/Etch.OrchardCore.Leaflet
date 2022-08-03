@@ -17,6 +17,9 @@
         public const string MapMouseWheelZoom = "MouseWheelZoom";
         public const string MapZoomControlPositionFieldName = "ZoomControlPosition";
 
+        public const string PoiAlwaysDisplayField = "AlwaysDisplay";
+        public const string PoiZoomLevelsField = "ZoomLevels";
+
         public const string PoiSelectEventCategoryFieldName = "PoiSelectEventCategory";
         public const string PoiSelectEventActionFieldName = "PoiSelectEventAction";
 

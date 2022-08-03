@@ -19,14 +19,22 @@ const addPoi = (
         iconSize: [dimensions.width, dimensions.height],
     });
 
+    const marker = L.marker([poi.lat, poi.lng], {
+        draggable: options.draggableMarkers,
+        icon,
+    });
+
+    if (poi.alwaysDisplay || poi.zoomLevels.indexOf(map.getZoom()) > -1) {
+        marker.addTo(map);
+    }
+
     return {
+        alwaysDisplay: poi.alwaysDisplay,
         contentItemId: poi.contentItemId,
         icon: poi.icon,
-        marker: L.marker([poi.lat, poi.lng], {
-            draggable: options.draggableMarkers,
-            icon,
-        }).addTo(map),
+        marker,
         title: poi.title,
+        zoomLevels: poi.zoomLevels,
     };
 };
 

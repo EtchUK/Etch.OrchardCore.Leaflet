@@ -37,6 +37,7 @@ const initialize = (options: IInitializeOptions): L.Map => {
         minZoom: options.minZoom || 8,
         scrollWheelZoom: options.mouseWheelZoom ?? false,
         zoomControl: true,
+        zoom: initialZoomLevel,
     }).setView(new L.LatLng(0, 0), initialZoomLevel);
 
     (map.zoomControl as any).setPosition(options.zoomControlPosition);

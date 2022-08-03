@@ -1,6 +1,7 @@
 import IAnalytics from '../models/analytics';
 import IInitialiseOptions from '../models/initializeOptions';
 import IMapMarker from '../models/mapMarker';
+import { executeScripts } from '../utils/scripts';
 import { updateQueryString } from '../utils/url';
 
 export interface IPoiPopup {
@@ -56,6 +57,8 @@ export const displayPoi = (
                     $content.innerHTML = $content.innerHTML.concat(
                         data.Content
                     );
+
+                    executeScripts($content);
                 }
 
                 document

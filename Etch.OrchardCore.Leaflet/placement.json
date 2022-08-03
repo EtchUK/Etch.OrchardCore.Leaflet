@@ -6,6 +6,13 @@
       ],
       "displayType": "Detail",
       "place": "-"
+    },
+    {
+      "contentPart": [
+        "PoiPart"
+      ],
+      "displayType": "Detail",
+      "place": "-"
     }
   ],
   "BooleanField_Edit": [
@@ -114,6 +121,15 @@
   "TitlePart_Edit": [
     {
       "place": "Content:1"
+    }
+  ],
+  "ValuesField": [
+    {
+      "contentPart": [
+        "PoiPart"
+      ],
+      "displayType": "Detail",
+      "place": "-"
     }
   ]
 }

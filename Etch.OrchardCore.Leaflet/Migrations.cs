@@ -1,4 +1,5 @@
-﻿using Etch.OrchardCore.Leaflet.Indexes;
+﻿using Etch.OrchardCore.Fields.Values.Fields;
+using Etch.OrchardCore.Leaflet.Indexes;
 using Etch.OrchardCore.Leaflet.Models;
 using OrchardCore.Autoroute.Models;
 using OrchardCore.ContentFields.Fields;
@@ -154,7 +155,7 @@ namespace Etch.OrchardCore.Leaflet
 
         public int UpdateFrom3()
         {
-            _contentDefinitionManager.AlterPartDefinition("PoiPart", builder => builder
+            _contentDefinitionManager.AlterPartDefinition(nameof(PoiPart), builder => builder
                 .Attachable()
                 .WithDescription("Provides configuration for POI markers."));
 
@@ -259,6 +260,37 @@ namespace Etch.OrchardCore.Leaflet
             );
 
             return 9;
+        }
+
+        public int UpdateFrom9()
+        {
+            _contentDefinitionManager.AlterPartDefinition(nameof(PoiPart), part => part
+                .WithField(Constants.PoiAlwaysDisplayField, field => field
+                    .OfType(nameof(BooleanField))
+                    .WithDisplayName("Always Display")
+                    .WithPosition("0")
+                    .WithSettings(new BooleanFieldSettings
+                    {
+                        DefaultValue = true,
+                        Hint = "Display POI on all zoom levels.",
+                        Label = "Always Display"
+                    })
+                )
+            );
+
+            _contentDefinitionManager.AlterPartDefinition(nameof(PoiPart), part => part
+                .WithField(Constants.PoiZoomLevelsField, field => field
+                    .OfType(nameof(ValuesField))
+                    .WithDisplayName("Zoom Levels")
+                    .WithPosition("1")
+                    .WithSettings(new Fields.Values.Settings.ValuesFieldSettings
+                    {
+                        Hint = "Enter the zoom level(s) (e.g. 12) that POI should be visible on."
+                    })
+                )
+            );
+
+            return 10;
         }
     }
 }

@@ -22,7 +22,6 @@ const displayPois = (map: L.Map, options: IInitialiseOptions): void => {
     }
 
     const state: IDisplayPopupsState = { activePopup: null };
-
     const pois = addPois(map, options, JSON.parse(options.pois));
 
     const mouseOutPoi = (e: L.LeafletEvent) => {
@@ -119,6 +118,15 @@ const displayPois = (map: L.Map, options: IInitialiseOptions): void => {
             }
 
             const dimensions = getIconDimensions(map, options, poi.icon);
+
+            if (
+                !poi.alwaysDisplay &&
+                poi.zoomLevels.indexOf(map.getZoom()) === -1
+            ) {
+                poi.marker.removeFrom(map);
+            } else {
+                poi.marker.addTo(map);
+            }
 
             poi.marker.setIcon(
                 L.icon({

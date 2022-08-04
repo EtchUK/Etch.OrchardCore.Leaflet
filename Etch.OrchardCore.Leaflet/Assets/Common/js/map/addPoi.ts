@@ -24,7 +24,7 @@ const addPoi = (
         icon,
     });
 
-    if (poi.alwaysDisplay || poi.zoomLevels.indexOf(map.getZoom()) > -1) {
+    if (poi.alwaysDisplay || !poi.zoomLevels || poi.zoomLevels.indexOf(map.getZoom()) > -1) {
         marker.addTo(map);
     }
 

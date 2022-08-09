@@ -43,7 +43,7 @@
             initialZoom: @map.InitialZoom, 
             maxZoom: @map.MaxZoom,
             minZoom: @map.MinZoom,
-            mouseWheelZoom: true,
+            mouseWheelZoom: false,
             pois: '@Html.Raw(PoiUtils.Serialize(Model.Markers))', 
             tileRoot: '@Model.TileRoot', 
             width: @Model.Width, 

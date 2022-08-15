@@ -101,7 +101,7 @@ export const displayPoi = (
 
         if (window.gtag) {
             window.gtag('event', analytics.poiSelectEventAction, {
-                event_category: analytics.poiSelectEventAction,
+                event_category: analytics.poiSelectEventCategory,
                 event_label: poi.title,
             });
         }

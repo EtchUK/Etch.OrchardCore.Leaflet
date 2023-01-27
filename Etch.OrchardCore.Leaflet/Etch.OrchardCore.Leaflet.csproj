@@ -4,7 +4,7 @@
     <TargetFramework>net6.0</TargetFramework>
     <AddRazorSupportForMvc>true</AddRazorSupportForMvc>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
-    <Version>1.5.3</Version>
+    <Version>1.5.4</Version>
     <PackageId>Etch.OrchardCore.Leaflet</PackageId>
     <Title>Leaflet Maps</Title>
     <Authors>Etch UK Ltd.</Authors>

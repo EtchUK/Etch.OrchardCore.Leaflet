@@ -6,6 +6,7 @@ import displayPois from '../../Common/js/map/displayPois';
 
 declare global {
     interface Window {
+        dataLayer: any;
         ga: GoogleAnalytics;
         gtag: Gtag.Gtag;
         initializeMap: (options: IInitializeOptions) => void;

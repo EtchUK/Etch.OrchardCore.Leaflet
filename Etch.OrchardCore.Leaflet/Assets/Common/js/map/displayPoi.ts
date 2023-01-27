@@ -92,10 +92,21 @@ export const displayPoi = (
 
     const track = () => {
         if (
-            (!window.gtag && !window.ga) ||
+            (!window.gtag && !window.ga && !window.dataLayer) ||
             !analytics?.poiSelectEventAction ||
             !analytics?.poiSelectEventCategory
         ) {
+            return;
+        }
+
+        if (window.dataLayer) {
+            window.dataLayer.push({
+                event: analytics.poiSelectEventAction,
+                action: analytics.poiSelectEventAction,
+                category: analytics.poiSelectEventCategory,
+                label: poi.title,
+            });
+
             return;
         }
 

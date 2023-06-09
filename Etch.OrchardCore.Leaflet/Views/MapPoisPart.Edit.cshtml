@@ -110,6 +110,19 @@
                debug-src="~/OrchardCore.Flows/Styles/flows.edit.css"></style>
     }
 
+    @* Rendered only once per type to initialize the scripts its editor will need *@
+    @foreach (var type in poiContentTypes)
+    {
+        @if (Context.Items["MapPoisPart.Edit:" + type.Name] == null)
+        {
+            Context.Items["MapPoisPart.Edit:" + type.Name] = new object();
+
+            // Render a mock widget so that its resources are included in the page
+            var contentItem = await ContentManager.NewAsync(type.Name);
+            await DisplayAsync(await ContentItemDisplayManager.BuildEditorAsync(contentItem, Model.Updater, true, "", Guid.NewGuid().ToString("n")));
+        }
+    }
+
     <div class="modal fade" id="modalPoiMarkers" tabindex="-1" role="dialog" aria-labelledby="poi-picker-label" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
             <div class="modal-content">

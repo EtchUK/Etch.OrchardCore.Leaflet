@@ -24,7 +24,7 @@
     string partName = ((dynamic)Model).Metadata.Name;
 }
 
-<script asp-src="~/Etch.OrchardCore.Leaflet/Scripts/admin.js" depends-on="jquery" at="Foot" asp-append-version="true"></script>
+<script asp-src="~/Etch.OrchardCore.Leaflet/Scripts/admin.js" depends-on="admin, jquery" at="Foot" asp-append-version="true"></script>
 <script asp-name="jQuery-ui" at="Foot"></script>
 
 @if (!Model.HasTiles)

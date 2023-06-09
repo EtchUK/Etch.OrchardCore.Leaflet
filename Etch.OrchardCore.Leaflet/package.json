@@ -52,7 +52,7 @@
         "webpack-remove-empty-scripts": "^0.8.1"
     },
     "dependencies": {
-        "bootstrap": "^4.5.3",
+        "bootstrap": "^5.2.3",
         "leaflet-deepzoom": "^2.0.0"
     }
 }

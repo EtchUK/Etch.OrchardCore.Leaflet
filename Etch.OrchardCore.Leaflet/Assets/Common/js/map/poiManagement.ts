@@ -1,4 +1,4 @@
-import { Modal } from 'bootstrap';
+import bootstrap from 'bootstrap';
 import * as L from 'leaflet';
 import { v4 as uuidv4 } from 'uuid';
 
@@ -192,7 +192,7 @@ const poiManagement = (map: L.Map, options: IInitialiseOptions): void => {
                 });
 
             if ($modal) {
-                new Modal($modal).hide();
+                new bootstrap.Modal($modal).hide();
             }
 
             dispose();
@@ -236,7 +236,7 @@ const poiManagement = (map: L.Map, options: IInitialiseOptions): void => {
         });
 
         if ($modal) {
-            new Modal($modal).show();
+            new bootstrap.Modal($modal).show();
         }
     });
 

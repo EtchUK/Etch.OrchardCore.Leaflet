@@ -80,6 +80,7 @@ module.exports = [
             extensions: ['.tsx', '.ts', '.js'],
         },
         externals: {
+            bootstrap: 'bootstrap',
             jquery: 'jQuery',
         },
     },

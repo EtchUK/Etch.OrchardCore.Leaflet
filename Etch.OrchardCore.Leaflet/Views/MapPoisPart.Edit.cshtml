@@ -14,8 +14,9 @@
 @inject IContentItemDisplayManager ContentItemDisplayManager
 
 @{
+    var htmlFieldPrefix = ViewContext.ViewData.TemplateInfo.HtmlFieldPrefix;
     var poiTemplatePlaceholderId = Html.Id("poiTemplatePlaceholderId");
-    var poiContentTypes = ContentDefinitionManager.ListTypeDefinitions().Where(t => t.GetSettings<ContentTypeSettings>().Stereotype == "POI");
+    var poiContentTypes = ContentDefinitionManager.ListTypeDefinitions().Where(t => t.Parts.Any(x => x.Name.Equals(nameof(PoiPart))));
     var parentContentType = Model.ContentItem.ContentType;
     var map = Model.ContentItem.As<Map>();
 
@@ -54,16 +55,16 @@
         <div id="map"></div>
     </div>
 
-    <div class="form-group">
+    <div class="mb-3">
         <h3>@T["POIs"]</h3>
 
         <p class="hint">@T["Click on map to add new POI."]</p>
 
         <div id="@poiTemplatePlaceholderId" class="widget-template-placeholder widget-template-placeholder-bagpart bagpart-@partName.HtmlClassify() row mx-0" data-buildeditorurl="@Url.Action("BuildEditor", "Admin", new { area = "Etch.OrchardCore.Leaflet" })">
-            @{ var htmlFieldPrefix = this.ViewContext.ViewData.TemplateInfo.HtmlFieldPrefix; }
-
             @foreach (var poi in Model.MapPoisPart.ContentItems)
             {
+                var index = 0;
+
                 //Create a Card Shape
                 dynamic contentCard = await New.ContentCard(
                     // FOR Updater
@@ -81,13 +82,15 @@
                     CanDelete: true,
                     //Input hidden
                     //Prefixes
-                    PrefixValue: poi.ContentItemId,
+                    PrefixValue: htmlFieldPrefix + '-' + (index++).ToString(),
                     HtmlFieldPrefix: htmlFieldPrefix,
                     PrefixesId: Html.IdFor(x => x.Prefixes),
                     PrefixesName: Html.NameFor(x => x.Prefixes),
                     //Content Types
                     ContentTypesId: Html.IdFor(x => x.ContentTypes),
-                    ContentTypesName: Html.NameFor(x => x.ContentTypes)
+                    ContentTypesName: Html.NameFor(x => x.ContentTypes),
+                    ContentItemsId: Html.IdFor(x => x.ContentItems),
+                    ContentItemsName: Html.NameFor(x => x.ContentItems)
                 );
 
                 @await DisplayAsync(contentCard)
@@ -107,61 +110,49 @@
                debug-src="~/OrchardCore.Flows/Styles/flows.edit.css"></style>
     }
 
-    @* Rendered only once per type to initialize the scripts its editor will need *@
-    @foreach (var type in poiContentTypes)
-    {
-        @if (Context.Items["MapPoisPart.Edit:" + type.Name] == null)
-        {
-            Context.Items["MapPoisPart.Edit:" + type.Name] = new object();
-
-            // Render a mock widget so that its resources are included in the page
-            var contentItem = await ContentManager.NewAsync(type.Name);
-            await DisplayAsync(await ContentItemDisplayManager.BuildEditorAsync(contentItem, Model.Updater, true, "", Guid.NewGuid().ToString("n")));
-        }
-    }
-
     <div class="modal fade" id="modalPoiMarkers" tabindex="-1" role="dialog" aria-labelledby="poi-picker-label" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
             <div class="modal-content">
                 <div class="modal-header">
                     <h5 class="modal-title">@T["Available POIs"]</h5>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
-                    <div class="card-columns">
+                    <div class="row row-cols-1 row-cols-md-3 g-2">
                         @foreach (var type in poiContentTypes)
                         {
-                            <div class="card">
-                                <div class="card-body">
-                                    <h4>@type.DisplayName.Replace("POI", "")</h4>
-                                    <p>@type.Settings["Description"]</p>
-                                </div>
-                                <div class="card-footer text-muted text-xs-right">
-                                    <button type="button"
-                                            class="btn btn-primary btn-sm add-poi"
-                                            data-target-id="@poiTemplatePlaceholderId"
-                                            data-parent-content-type="@parentContentType"
-                                            data-part-name="@partName"
-                                            data-prefixes-name="@Html.NameFor(x => x.Prefixes)"
-                                            data-contenttypes-name="@Html.NameFor(x => x.ContentTypes)"
-                                            data-widget-type="@type.Name"
-                                            data-dismiss="modal"
-                                            href="javascript:;"
-                                            data-icon-marker-path="@(type.Parts.SingleOrDefault(x => x.Name == nameof(PoiPart)).GetSettings<PoiPartSettings>().AdminMarkerIconPath)"
-                                            data-icon-marker-height="@(type.Parts.SingleOrDefault(x => x.Name == nameof(PoiPart)).GetSettings<PoiPartSettings>().MarkerIconHeight)"
-                                            data-icon-marker-width="@(type.Parts.SingleOrDefault(x => x.Name == nameof(PoiPart)).GetSettings<PoiPartSettings>().MarkerIconWidth)"
-                                            data-icon-marker-zoom-ratio="@(type.Parts.SingleOrDefault(x => x.Name == nameof(PoiPart)).GetSettings<PoiPartSettings>().MarkerIconZoomRatio)">
-                                        @T["Add"]
-                                    </button>
+                            <div class="col activity widget">
+                                <div class="card h-100">
+                                    <div class="card-body">
+                                        <h4 class="card-title">@type.DisplayName.Replace("POI", "")</h4>
+                                        <p>@type.Settings["Description"]</p>
+                                    </div>
+                                    <div class="card-footer text-muted text-sm-end">
+                                        <button type="button"
+                                                class="btn btn-primary btn-sm add-poi"
+                                                data-target-id="@poiTemplatePlaceholderId"
+                                                data-parent-content-type="@parentContentType"
+                                                data-part-name="@partName"
+                                                data-prefixes-name="@Html.NameFor(x => x.Prefixes)"
+                                                data-contenttypes-name="@Html.NameFor(x => x.ContentTypes)"
+                                                data-contentitems-name="@Html.NameFor(x => x.ContentItems)"
+                                                data-widget-type="@type.Name"
+                                                data-bs-dismiss="modal"
+                                                href="javascript:;"
+                                                data-icon-marker-path="@(type.Parts.SingleOrDefault(x => x.Name == nameof(PoiPart)).GetSettings<PoiPartSettings>().AdminMarkerIconPath)"
+                                                data-icon-marker-height="@(type.Parts.SingleOrDefault(x => x.Name == nameof(PoiPart)).GetSettings<PoiPartSettings>().MarkerIconHeight)"
+                                                data-icon-marker-width="@(type.Parts.SingleOrDefault(x => x.Name == nameof(PoiPart)).GetSettings<PoiPartSettings>().MarkerIconWidth)"
+                                                data-icon-marker-zoom-ratio="@(type.Parts.SingleOrDefault(x => x.Name == nameof(PoiPart)).GetSettings<PoiPartSettings>().MarkerIconZoomRatio)">
+                                            @T["Add"]
+                                        </button>
+                                    </div>
                                 </div>
                             </div>
                         }
                     </div>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal">@T["Cancel"]</button>
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">@T["Cancel"]</button>
                 </div>
             </div>
         </div>

@@ -17,6 +17,7 @@ namespace Etch.OrchardCore.Leaflet.ViewModels
         public string TileRoot { get; set; }
         public int Width { get; set; }
 
+        public string[] ContentItems { get; set; } = Array.Empty<string>();
         public string[] ContentTypes { get; set; } = Array.Empty<string>();
         public string[] Prefixes { get; set; } = Array.Empty<string>();
 

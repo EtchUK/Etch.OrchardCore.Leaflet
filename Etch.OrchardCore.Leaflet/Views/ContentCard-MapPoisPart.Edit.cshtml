@@ -16,7 +16,7 @@
         @T["{0} — <span class=\"hint\">{1}</span>", contentItem.DisplayText, contentType]
         @if (Model.CanDelete != false)
         {
-            <div class="btn-group btn-group-sm float-right" role="group">
+            <div class="btn-group btn-group-sm float-end" role="group">
                 @* We don't render an Insert button as the container type is not known here *@
                 <button type="button" class="btn btn-danger poi-delete widget-delete" data-content-item-id="@contentItem.ContentItemId" data-title="@T["Delete"]" data-message="@T["Are you sure you want to remove this item?"]"><i class="fa fa-trash" aria-hidden="true"></i></button>
             </div>

@@ -1,6 +1,6 @@
 {
     "name": "etch.orchardcore.leaflet",
-    "version": "0.6.0",
+    "version": "1.6.0",
     "description": "Orchard Core module providing interactive maps utilising Leaflet.",
     "scripts": {
         "build": "webpack --mode production",

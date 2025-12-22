@@ -1,3 +1,7 @@
+> ⚠️ **Archived – No Longer Maintained**
+>
+> This repository is no longer maintained due to a change in the technologies used by our organisation. No further updates, fixes, or security patches will be provided. The project is archived to prevent the expectation of ongoing support. The code remains available as-is for reference or forking.
+
 # Etch.OrchardCore.Leaflet
 
 Module for [Orchard Core](https://github.com/OrchardCMS/OrchardCore) that provides interactive maps using [Leaflet](https://leafletjs.com/).
@@ -43,3 +47,4 @@ The other change is to copy the tile generator application files from the NuGet 
 ## Usage
 
 _Module is still being developed, usage instructions will be available in the future._
+
